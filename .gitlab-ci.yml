@@ -5,22 +5,43 @@ stages:
 
 variables:
   CARGO_HOME: ${CI_PROJECT_DIR}/cargo
-  MSRV: '1.43'
-  WASMTIME_VERSION: 0.23.0
-  XARGO_VERSION: 0.3.20
+  MSRV: '1.50'
+  STABLE_RUST_VERSION: '1.51'
+  WASMTIME_VERSION: '0.26.0'
+  XARGO_VERSION: '0.3.20'
+
+.changes_rule: &changes_rule
+  changes:
+    - .gitlab-ci.yml
+    - .cargo/config.toml
+    - Cargo.toml
+    - components/**.rs
+    - src/**.rs
+
+# FORCE_RUNをtrueにして手動で実行すればNightlyのテストも動く
+.nightly_rules: &nightly_rules
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $MSRV != $STABLE_RUST_VERSION'
+      when: always
+      allow_failure: true
+    - if: '$RUN_NIGHTLY_TESTS == "true" && $MSRV != $STABLE_RUST_VERSION'
+      when: always
+      allow_failure: true
+    - when: never
 
 # Linux
 
 .linux_cross_compile_template: &linux_cross_compile_template
-  image: ubuntu:groovy
+  image: ubuntu:hirsute
   cache:
     key: ${CI_JOB_STAGE}-${TARGET}
     paths:
       - target/${TARGET}
   before_script:
+    - set -ex
     - apt update -y
     - apt install -y curl make 
-    - curl https://sh.rustup.rs -sSf > install.sh
+    - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > install.sh
     - sh install.sh -y --default-toolchain ${CHANNEL} --profile minimal -t ${TARGET}
     - >
       if [[ ${#PACKAGES[@]} -ne 0 ]]; then
@@ -102,13 +123,17 @@ variables:
 
 stable-linux:
   stage: stable
+  rules:
+    - <<: *changes_rule
   variables:
-    CHANNEL: stable
+    CHANNEL: ${STABLE_RUST_VERSION}
   <<: *linux_cross_compile_template
   <<: *linux_matrix_template
 
 msrv-linux:
   stage: msrv
+  rules:
+    - <<: *changes_rule
   variables:
     CHANNEL: ${MSRV}
   <<: *linux_cross_compile_template
@@ -116,16 +141,16 @@ msrv-linux:
 
 nightly-linux:
   stage: nightly
+  <<: *nightly_rules
   variables:
     CHANNEL: nightly
   <<: *linux_cross_compile_template
   <<: *linux_matrix_template
 
 tier3-linux:
-  rules:
-    - allow_failure: true
   stage: nightly
-  image: ubuntu:groovy
+  image: ubuntu:hirsute
+  <<: *nightly_rules
   cache:
     key: ${CI_JOB_STAGE}-${TARGET}
     paths:
@@ -146,6 +171,8 @@ tier3-linux:
     - make xargo_test.${TARGET}
   parallel:
     matrix:
+      - PACKAGES: gcc-arm-linux-gnueabi
+        TARGET: armv4t-unknown-linux-gnueabi
       - PACKAGES: gcc-mipsisa32r6-linux-gnu
         TARGET: mipsisa32r6-unknown-linux-gnu
       - PACKAGES: gcc-mipsisa32r6el-linux-gnu
@@ -158,7 +185,7 @@ tier3-linux:
 # WebAssembly
 
 .wasm32-wasi_template: &wasm32-wasi_template
-  image: ubuntu:groovy
+  image: ubuntu:hirsute
   cache:
     key: ${CI_JOB_STAGE}-wasm32-wasi
     paths:
@@ -166,7 +193,7 @@ tier3-linux:
   before_script:
     - apt update -y
     - apt install -y curl gcc make xz-utils
-    - curl https://sh.rustup.rs -sSf > install.sh
+    - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > install.sh
     - sh install.sh -y --default-toolchain ${CHANNEL} --profile minimal -t wasm32-wasi
     - curl -L "https://github.com/bytecodealliance/wasmtime/releases/download/v${WASMTIME_VERSION}/wasmtime-v${WASMTIME_VERSION}-x86_64-linux.tar.xz" > wasmtime-v${WASMTIME_VERSION}-x86_64-linux.tar.xz
     - tar -xvf wasmtime-v${WASMTIME_VERSION}-x86_64-linux.tar.xz
@@ -177,18 +204,23 @@ tier3-linux:
 
 stable-wasm32-wasi:
   stage: stable
+  rules:
+    - <<: *changes_rule
   variables:
-    CHANNEL: stable
+    CHANNEL: ${STABLE_RUST_VERSION}
   <<: *wasm32-wasi_template
 
 msrv-wasm32-wasi:
   stage: msrv
+  rules:
+    - <<: *changes_rule
   variables:
     CHANNEL: ${MSRV}
   <<: *wasm32-wasi_template
 
 nightly-wasm32-wasi:
   stage: nightly
+  <<: *nightly_rules
   variables:
     CHANNEL: nightly
   <<: *wasm32-wasi_template
@@ -221,13 +253,17 @@ nightly-wasm32-wasi:
 
 stable-windows-msvc:
   stage: stable
+  rules:
+    - <<: *changes_rule
   variables:
-    CHANNEL: stable
+    CHANNEL: ${STABLE_RUST_VERSION}
   <<: *windows_msvc_template
   <<: *windows_matrix_template
 
 msrv-windows-msvc:
   stage: msrv
+  rules:
+    - <<: *changes_rule
   variables:
     CHANNEL: ${MSRV}
   <<: *windows_msvc_template
@@ -235,6 +271,7 @@ msrv-windows-msvc:
 
 nightly-windows-msvc:
   stage: nightly
+  <<: *nightly_rules
   variables:
     CHANNEL: nightly
   <<: *windows_msvc_template

@@ -70,6 +70,4 @@ members = [
     "components/hashes/sha3",
     "components/dev-utils",
     "components/utils",
-
-    "examples/hashsum",
 ]

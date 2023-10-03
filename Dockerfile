@@ -4,9 +4,8 @@ WORKDIR /workdir
 
 ENV CARGO_HOME='/cargo' \
     PATH="${PATH}:/cargo/bin" \
-    MSRV='1.64.0' \
-    STABLE_RUST_VERSION='1.70.0' \
-    WASMTIME_VERSION='9.0.3' \
+    STABLE_RUST_VERSION='1.72.1' \
+    WASMTIME_VERSION='13.0.0' \
     TARGETS='\
         aarch64-unknown-linux-gnu \
         aarch64-unknown-linux-musl \
@@ -47,7 +46,6 @@ RUN \
     apt-get update -y && \
     apt-get install -y \
         curl \
-        make \
         qemu-user \
         xz-utils \
         gcc-aarch64-linux-gnu \
@@ -78,8 +76,6 @@ RUN \
 RUN \
     curl https://sh.rustup.rs -sSf > install.sh && \
     sh install.sh -y --default-toolchain ${STABLE_RUST_VERSION} --profile minimal && \
-    rustup target add ${TARGETS} && \
-    rustup default "${MSRV}" && \
     rustup target add ${TARGETS} && \
     rustup default nightly && \
     rustup target add ${TARGETS}

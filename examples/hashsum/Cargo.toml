@@ -2,8 +2,8 @@
 name = "hashsum"
 version = "0.1.0"
 authors = ["glatan <glatan@protonmail.com>"]
-edition = "2018"
+edition = "2021"
 
 [dependencies]
 clap = { version = "2", features = ["yaml"] }
-ghash = { path = "../../", features = ["default"] }
+libre_crypto = { path = "../../", features = ["all"] }

@@ -1,5 +1,5 @@
 [package]
-name = "ghash"
+name = "libre_crypto"
 version = "0.0.1"
 readme = "README.md"
 edition = "2021"
@@ -7,13 +7,20 @@ edition = "2021"
 [workspace.package]
 authors = ["glatan <glatan@protonmail.com>"]
 edition = "2021"
-rust-version = "1.64.0"
-license = "Apache-2.0 OR MIT"
-homepage = "https://gitlab.com/glatan/ghash/"
-repository = "https://gitlab.com/glatan/ghash/"
+rust-version = "1.72.1"
+license = "GPL-3.0-only"
+homepage = "https://gitlab.com/glatan/libre-crypto/"
+repository = "https://gitlab.com/glatan/libre-crypto/"
 
 [features]
 default = [
+    "blake2",
+    "sha2",
+    "sha3",
+    "cryptographic_hash_function",
+]
+
+all=[
     "blake",
     "blake2",
     "edonr",
@@ -25,52 +32,43 @@ default = [
     "sha0",
     "sha1",
     "sha2",
-    "sha3"
-]
-minimal = [
-    "blake/minimal",
-    "blake2/minimal",
-    "edonr/minimal",
-    "keccak",
-    "md2/minimal",
-    "md4/minimal",
-    "md5/minimal",
-    "ripemd/minimal",
-    "sha0/minimal",
-    "sha1/minimal",
-    "sha2/minimal",
-    "sha3"
+    "sha3",
+    "cryptographic_hash_function",
 ]
 
 [dependencies]
-blake = { path = "crate/hash/blake", optional = true }
-blake2 = { path = "crate/hash/blake2", optional = true }
-edonr = { path = "crate/hash/edonr", optional = true }
-keccak = { path = "crate/hash/keccak", optional = true }
-md2 = { path = "crate/hash/md2", optional = true }
-md4 = { path = "crate/hash/md4", optional = true }
-md5 = { path = "crate/hash/md5", optional = true }
-ripemd = { path = "crate/hash/ripemd", optional = true }
-sha0 = { path = "crate/hash/sha0", optional = true }
-sha1 = { path = "crate/hash/sha1", optional = true }
-sha2 = { path = "crate/hash/sha2", optional = true }
-sha3 = { path = "crate/hash/sha3", optional = true }
-util = { path = "crate/util" }
+blake = { path = "crate/cryptographic_hash_function/blake", optional = true }
+blake2 = { path = "crate/cryptographic_hash_function/blake2", optional = true }
+edonr = { path = "crate/cryptographic_hash_function/edonr", optional = true }
+keccak = { path = "crate/cryptographic_hash_function/keccak", optional = true }
+md2 = { path = "crate/cryptographic_hash_function/md2", optional = true }
+md4 = { path = "crate/cryptographic_hash_function/md4", optional = true }
+md5 = { path = "crate/cryptographic_hash_function/md5", optional = true }
+ripemd = { path = "crate/cryptographic_hash_function/ripemd", optional = true }
+sha0 = { path = "crate/cryptographic_hash_function/sha0", optional = true }
+sha1 = { path = "crate/cryptographic_hash_function/sha1", optional = true }
+sha2 = { path = "crate/cryptographic_hash_function/sha2", optional = true }
+sha3 = { path = "crate/cryptographic_hash_function/sha3", optional = true }
+cryptographic_hash_function = { path = "crate/cryptographic_hash_function/cryptographic_hash_function", optional = true }
 
 [workspace]
 members = [
-    "crate/hash/blake",
-    "crate/hash/blake2",
-    "crate/hash/edonr",
-    "crate/hash/keccak",
-    "crate/hash/md2",
-    "crate/hash/md4",
-    "crate/hash/md5",
-    "crate/hash/ripemd",
-    "crate/hash/sha0",
-    "crate/hash/sha1",
-    "crate/hash/sha2",
-    "crate/hash/sha3",
-    "crate/dev-util",
-    "crate/util",
+    # Cryptographic Hash Function
+    "crate/cryptographic_hash_function/blake",
+    "crate/cryptographic_hash_function/blake2",
+    "crate/cryptographic_hash_function/edonr",
+    "crate/cryptographic_hash_function/keccak",
+    "crate/cryptographic_hash_function/md2",
+    "crate/cryptographic_hash_function/md4",
+    "crate/cryptographic_hash_function/md5",
+    "crate/cryptographic_hash_function/ripemd",
+    "crate/cryptographic_hash_function/sha0",
+    "crate/cryptographic_hash_function/sha1",
+    "crate/cryptographic_hash_function/sha2",
+    "crate/cryptographic_hash_function/sha3",
+    "crate/cryptographic_hash_function/dev-util",
+    "crate/cryptographic_hash_function/merkle_damgard"
+]
+exclude = [
+    "examples",
 ]

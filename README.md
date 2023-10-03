@@ -1,12 +1,6 @@
-# Ghash
+# LibreCrypto
 
-いろんなハッシュ関数を実装していくプロジェクト(基本的に`#![no_std]`)
-
-## About
-
-基本的に仕様書に準じた素朴な実装になっているため、各ハッシュ関数の仕様を学ぶ用途には多分適しています。
-
-自分のプロジェクトでハッシュ関数を使いたい場合は、より高速な他の実装を利用することをおすすめします。
+`#![no_std]`で暗号を実装していくプロジェクト
 
 ## 実装しているハッシュ関数
 
@@ -31,17 +25,7 @@
 * WebAssemblyターゲットでビルドしたデモが[ここ](https://ghash.glatan.vercel.app/)にあります。
 * PSP(PlayStation Portable)ターゲットのデモは[ここ](https://gitlab.com/glatan/ghash-psp)。
 
-## MSRV(Minimum Supported Rust Version)
-
-1.50
-
-## Tests
-
-以下のターゲットでテストを通しています。
-
-* OS: ubuntu:hirsute
-
-### Stable, MSRV, Nightly
+## Config
 
 |Target|Linker|Runner + Option|Note|
 |-|-|-|-|
@@ -96,15 +80,16 @@
 
 ### default
 
-デフォルトのターゲット
+以下の機能が利用可能
 
-### minimal
+- BLAKE2
+- SHA-2
+- SHA-3
 
-defaultターゲットより出力バイナリのサイズが小さい。WebAssemblyを生成して、ブラウザで動作させるときはこっちの利用を推奨。それと多分こっちのほうが仕様書と比べながら読みやすい。
+### all
+
+全ての機能を有効化する。
 
 ## License
 
-This project is licensed under either of
-
-* Apache License, Version 2.0 ([LICENSE-APACHE](./LICENSE-APACHE) or http://www.apache.org/licenses/LICENSE-2.0)
-* MIT license ([LICENSE-MIT](./LICENSE-MIT) or http://opensource.org/licenses/MIT)
+This project is licensed under GPL-3.0-only ([LICENSE](./LICENSE) or https://www.gnu.org/licenses/gpl-3.0-standalone.html)

@@ -1,0 +1,25 @@
+stable_linux:
+  stage: stable_test
+  variables:
+    CHANNEL: ${STABLE_RUST_VERSION}
+  extends:
+    - .default_rules
+    - .linux_template
+    - .linux_matrix_template
+
+stable_wasm32-wasi:
+  stage: stable_test
+  variables:
+    CHANNEL: ${STABLE_RUST_VERSION}
+  extends:
+    - .default_rules
+    - .wasm32-wasi_template
+
+stable_windows-msvc:
+  stage: stable_test
+  variables:
+    CHANNEL: ${STABLE_RUST_VERSION}
+  extends:
+    - .default_rules
+    - .windows-msvc_template
+    - .windows_matrix_template

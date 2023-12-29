@@ -7,10 +7,13 @@ edition = "2021"
 [workspace.package]
 authors = ["glatan <glatan@protonmail.com>"]
 edition = "2021"
-rust-version = "1.72.1"
+rust-version = "1.75.0"
 license = "GPL-3.0-only"
 homepage = "https://gitlab.com/glatan/libre-crypto/"
 repository = "https://gitlab.com/glatan/libre-crypto/"
+
+[workspace.lints.clippy]
+missing_const_for_fn = "deny"
 
 [features]
 default = [

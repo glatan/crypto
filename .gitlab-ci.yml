@@ -6,8 +6,8 @@ stages:
 variables:
   UBUNTU_IMAGE: docker.io/ubuntu:23.04
   CARGO_HOME: ${CI_PROJECT_DIR}/cargo
-  STABLE_RUST_VERSION: "1.72.1"
-  WASMTIME_VERSION: "13.0.0"
+  STABLE_RUST_VERSION: "1.75.0"
+  WASMTIME_VERSION: "16.0.0"
 
 .default_rules:
   rules:

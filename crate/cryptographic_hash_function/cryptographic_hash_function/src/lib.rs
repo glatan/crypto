@@ -2,21 +2,26 @@
 
 extern crate alloc;
 
-use alloc::{format, string::String, vec::Vec};
+use alloc::{string::String, vec::Vec};
+use core::fmt::Write;
 
 pub trait CryptographicHashFunction {
     fn hash_to_bytes(&mut self, message: &[u8]) -> Vec<u8>;
     fn hash_to_lowerhex(&mut self, message: &[u8]) -> String {
         self.hash_to_bytes(message)
             .iter()
-            .map(|byte| format!("{:02x}", byte))
-            .collect()
+            .fold(String::new(), |mut hex, byte| {
+                let _ = write!(hex, "{byte:02x}");
+                hex
+            })
     }
     fn hash_to_upperhex(&mut self, message: &[u8]) -> String {
         self.hash_to_bytes(message)
             .iter()
-            .map(|byte| format!("{:02X}", byte))
-            .collect()
+            .fold(String::new(), |mut hex, byte| {
+                let _ = write!(hex, "{byte:02X}");
+                hex
+            })
     }
 }
 

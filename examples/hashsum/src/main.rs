@@ -2,7 +2,7 @@
 extern crate clap;
 
 use clap::{App, ArgMatches};
-use libre_crypto::cryptographic_hash_function::*;
+use crypto::cryptographic_hash_function::*;
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;

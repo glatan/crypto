@@ -100,8 +100,7 @@
 
 .windows-msvc_template:
   tags:
-    - shared-windows
-    - windows
+    - saas-windows-medium-amd64
   cache:
     key: ${CI_JOB_STAGE}-${TARGET}
     paths:

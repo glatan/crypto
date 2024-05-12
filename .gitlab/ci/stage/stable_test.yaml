@@ -23,4 +23,4 @@ stable_windows-msvc:
   extends:
     - .default_rules
     - .windows-msvc_template
-    - .windows_matrix_template
+    - .windows-msvc_matrix_template

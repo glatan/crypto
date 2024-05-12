@@ -140,7 +140,6 @@ runner = 'qemu-mipsel -L /usr/mipsel-linux-gnu/'
 [target.mipsel-unknown-linux-musl]
 linker = 'mipsel-linux-gnu-gcc'
 runner = 'qemu-mipsel -L /usr/mipsel-linux-gnu/'
-# rustflags = ["-C", "target-feature=+crt-static"]
 
 [target.mipsisa32r6-unknown-linux-gnu]
 linker = 'mipsisa32r6-linux-gnu-gcc'

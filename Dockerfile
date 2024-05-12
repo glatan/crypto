@@ -1,11 +1,11 @@
-FROM docker.io/ubuntu:23.04
+FROM docker.io/ubuntu:24.04
 
 WORKDIR /workdir
 
 ENV CARGO_HOME='/cargo' \
     PATH="${PATH}:/cargo/bin" \
-    STABLE_RUST_VERSION='1.75.0' \
-    WASMTIME_VERSION='16.0.0' \
+    STABLE_RUST_VERSION='1.78.0' \
+    WASMTIME_VERSION='20.0.2' \
     TARGETS='\
         aarch64-unknown-linux-gnu \
         aarch64-unknown-linux-musl \
@@ -23,14 +23,6 @@ ENV CARGO_HOME='/cargo' \
         i586-unknown-linux-musl \
         i686-unknown-linux-gnu \
         i686-unknown-linux-musl \
-        mips-unknown-linux-gnu \
-        mips-unknown-linux-musl \
-        mips64-unknown-linux-gnuabi64 \
-        mips64-unknown-linux-muslabi64 \
-        mips64el-unknown-linux-gnuabi64 \
-        mips64el-unknown-linux-muslabi64 \
-        mipsel-unknown-linux-gnu \
-        mipsel-unknown-linux-musl \
         powerpc-unknown-linux-gnu \
         powerpc64-unknown-linux-gnu \
         powerpc64le-unknown-linux-gnu \

@@ -1,4 +1,4 @@
-use libre_crypto::cryptographic_hash_function::*;
+use crypto::cryptographic_hash_function::*;
 use std::io;
 use std::io::BufRead;
 

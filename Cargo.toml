@@ -1,16 +1,16 @@
 [package]
-name = "libre_crypto"
+name = "crypto"
 version = "0.0.1"
 readme = "README.md"
 edition = "2021"
 
 [workspace.package]
-authors = ["glatan <glatan@protonmail.com>"]
+authors = ["glatan <gitlab.com.crying257@passinbox.com>"]
 edition = "2021"
 rust-version = "1.75.0"
 license = "GPL-3.0-only"
-homepage = "https://gitlab.com/glatan/libre-crypto/"
-repository = "https://gitlab.com/glatan/libre-crypto/"
+homepage = "https://gitlab.com/glatan/crypto/"
+repository = "https://gitlab.com/glatan/crypto/"
 
 [workspace.lints.clippy]
 missing_const_for_fn = "deny"

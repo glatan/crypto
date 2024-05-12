@@ -1,4 +1,4 @@
-# LibreCrypto
+# Crypto
 
 `#![no_std]`で暗号を実装していくプロジェクト
 

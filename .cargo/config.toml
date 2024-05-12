@@ -99,6 +99,9 @@ runner = 'qemu-arm -L /usr/arm-linux-gnueabihf/'
 [target.wasm32-wasi]
 runner = 'wasmtime'
 
+[target.wasm32-wasip1]
+runner = 'wasmtime'
+
 # Tier3
 
 [target.armv4t-unknown-linux-gnueabi]
@@ -137,7 +140,7 @@ runner = 'qemu-mipsel -L /usr/mipsel-linux-gnu/'
 [target.mipsel-unknown-linux-musl]
 linker = 'mipsel-linux-gnu-gcc'
 runner = 'qemu-mipsel -L /usr/mipsel-linux-gnu/'
-rustflags = ["-C", "target-feature=+crt-static"]
+# rustflags = ["-C", "target-feature=+crt-static"]
 
 [target.mipsisa32r6-unknown-linux-gnu]
 linker = 'mipsisa32r6-linux-gnu-gcc'

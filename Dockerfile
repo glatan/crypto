@@ -32,7 +32,8 @@ ENV CARGO_HOME='/cargo' \
         thumbv7neon-unknown-linux-gnueabihf \
         x86_64-unknown-linux-gnu \
         x86_64-unknown-linux-musl \
-        wasm32-wasi'
+        wasm32-wasi \
+        wasm32-wasip1'
 
 RUN \
     apt-get update -y && \

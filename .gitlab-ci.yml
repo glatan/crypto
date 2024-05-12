@@ -4,10 +4,10 @@ stages:
   - nightly_test
 
 variables:
-  UBUNTU_IMAGE: docker.io/ubuntu:23.04
+  UBUNTU_IMAGE: docker.io/ubuntu:24.04
   CARGO_HOME: ${CI_PROJECT_DIR}/cargo
-  STABLE_RUST_VERSION: "1.75.0"
-  WASMTIME_VERSION: "16.0.0"
+  STABLE_RUST_VERSION: "1.78.0"
+  WASMTIME_VERSION: "20.0.2"
 
 .default_rules:
   rules:

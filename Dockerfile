@@ -42,24 +42,25 @@ RUN \
         qemu-user \
         xz-utils \
         gcc-aarch64-linux-gnu \
+        gcc-i686-linux-gnu \
+        gcc \
         gcc-arm-linux-gnueabi \
         gcc-arm-linux-gnueabihf \
-        gcc-arm-linux-gnueabi \
-        gcc-arm-linux-gnueabi \
-        gcc-arm-linux-gnueabihf \
-        gcc-i686-linux-gnu \
-        gcc-i686-linux-gnu \
-        gcc-mips-linux-gnu \
-        gcc-mipsel-linux-gnu \
-        gcc-mips64-linux-gnuabi64 \
-        gcc-mips64el-linux-gnuabi64 \
         gcc-powerpc-linux-gnu \
         gcc-powerpc64-linux-gnu \
         gcc-powerpc64le-linux-gnu \
         gcc-riscv64-linux-gnu \
         gcc-s390x-linux-gnu \
         gcc-sparc64-linux-gnu \
-        gcc
+        # Tier 3
+        gcc-mips-linux-gnu \
+        gcc-mips64-linux-gnuabi64 \
+        gcc-mipsisa32r6-linux-gnu \
+        gcc-mipsisa64r6-linux-gnuabi64 \
+        gcc-mipsel-linux-gnu \
+        gcc-mips64el-linux-gnuabi64 \
+        gcc-mipsisa32r6el-linux-gnu \
+        gcc-mipsisa64r6el-linux-gnuabi64 
 
 RUN \
     curl -L "https://github.com/bytecodealliance/wasmtime/releases/download/v${WASMTIME_VERSION}/wasmtime-v${WASMTIME_VERSION}-x86_64-linux.tar.xz" > wasmtime-v${WASMTIME_VERSION}-x86_64-linux.tar.xz && \

@@ -18,9 +18,12 @@ default = [
     "sha2",
     "sha3",
     "cryptographic_hash_function",
+    "poly1305",
+    "chacha",
 ]
 
 all=[
+    # Cryptographic Hash Function
     "blake",
     "blake2",
     "edonr",
@@ -34,9 +37,14 @@ all=[
     "sha2",
     "sha3",
     "cryptographic_hash_function",
+    # Message Authentication Code
+    "poly1305",
+    # Stream Cipher
+    "chacha",
 ]
 
 [dependencies]
+# Cryptographic Hash Function
 blake = { path = "crate/cryptographic_hash_function/blake", optional = true }
 blake2 = { path = "crate/cryptographic_hash_function/blake2", optional = true }
 edonr = { path = "crate/cryptographic_hash_function/edonr", optional = true }
@@ -50,6 +58,17 @@ sha1 = { path = "crate/cryptographic_hash_function/sha1", optional = true }
 sha2 = { path = "crate/cryptographic_hash_function/sha2", optional = true }
 sha3 = { path = "crate/cryptographic_hash_function/sha3", optional = true }
 cryptographic_hash_function = { path = "crate/cryptographic_hash_function/cryptographic_hash_function", optional = true }
+# Message Authentication Code
+poly1305 = { path = "crate/mac/poly1305", optional = true }
+# Stream Cipher
+chacha = { path = "crate/stream_cipher/chacha", optional = true }
+
+[lints]
+workspace = true
+
+[workspace.lints.clippy]
+missing_const_for_fn = "deny"
+dead_code = "allow"
 
 [workspace]
 members = [
@@ -67,7 +86,11 @@ members = [
     "crate/cryptographic_hash_function/sha2",
     "crate/cryptographic_hash_function/sha3",
     "crate/cryptographic_hash_function/dev-util",
-    "crate/cryptographic_hash_function/merkle_damgard"
+    "crate/cryptographic_hash_function/merkle_damgard",
+    # Message Authentication Code
+    "crate/mac/poly1305",
+    # Stream Cipher
+    "crate/stream_cipher/chacha",
 ]
 exclude = [
     "examples",

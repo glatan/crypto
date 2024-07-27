@@ -38,7 +38,8 @@ ENV CARGO_HOME='/cargo' \
 RUN \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    apt-get -Uy install \
+    apt-get update -y && \
+    apt-get install -y \
         curl \
         qemu-user \
         xz-utils \

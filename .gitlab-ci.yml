@@ -4,10 +4,12 @@ stages:
   - nightly_test
 
 variables:
-  UBUNTU_IMAGE: docker.io/ubuntu:24.04
   CARGO_HOME: ${CI_PROJECT_DIR}/cargo
-  STABLE_RUST_VERSION: "1.78.0"
-  WASMTIME_VERSION: "20.0.2"
+  STABLE_RUST_VERSION: "1.80.0"
+  WASMTIME_VERSION: "23.0.1"
+
+default:
+  image: docker.io/library/rust:${STABLE_RUST_VERSION}-slim-bookworm
 
 .default_rules:
   rules:

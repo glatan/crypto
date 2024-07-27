@@ -1,11 +1,11 @@
-FROM docker.io/ubuntu:24.04
+FROM docker.io/library/rust:1.80.0-slim-bookworm
 
 WORKDIR /workdir
 
 ENV CARGO_HOME='/cargo' \
     PATH="${PATH}:/cargo/bin" \
-    STABLE_RUST_VERSION='1.78.0' \
-    WASMTIME_VERSION='20.0.2' \
+    STABLE_RUST_VERSION='1.80.0' \
+    WASMTIME_VERSION='23.0.1' \
     TARGETS='\
         aarch64-unknown-linux-gnu \
         aarch64-unknown-linux-musl \
@@ -36,8 +36,9 @@ ENV CARGO_HOME='/cargo' \
         wasm32-wasip1'
 
 RUN \
-    apt-get update -y && \
-    apt-get install -y \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get -Uy install \
         curl \
         qemu-user \
         xz-utils \
@@ -65,7 +66,7 @@ RUN \
 RUN \
     curl -L "https://github.com/bytecodealliance/wasmtime/releases/download/v${WASMTIME_VERSION}/wasmtime-v${WASMTIME_VERSION}-x86_64-linux.tar.xz" > wasmtime-v${WASMTIME_VERSION}-x86_64-linux.tar.xz && \
     tar -xvf wasmtime-v${WASMTIME_VERSION}-x86_64-linux.tar.xz && \
-    mv wasmtime-v${WASMTIME_VERSION}-x86_64-linux/wasmtime /usr/bin/
+    mv wasmtime-v${WASMTIME_VERSION}-x86_64-linux/wasmtime /usr/local/bin/
 
 RUN \
     curl https://sh.rustup.rs -sSf > install.sh && \

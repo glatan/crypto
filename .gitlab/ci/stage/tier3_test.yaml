@@ -1,0 +1,20 @@
+tier3_linux_test:
+  stage: tier3_test
+  variables:
+    CHANNEL: nightly
+  allow_failure: true
+  before_script:
+    - set -ex
+    - rustup set profile minimal
+    - rustup default ${CHANNEL}
+    - rustup component add rust-src
+    - >
+      if [[ ${#PACKAGES[@]} -ne 0 ]]; then
+        apt-get update -y
+        apt-get install -y qemu-user ${PACKAGES};
+      fi
+  script:
+    - cargo test --workspace -Z build-std -vv --target ${TARGET}
+  extends:
+    - .default_rule
+    - .tier3_linux_matrix_template

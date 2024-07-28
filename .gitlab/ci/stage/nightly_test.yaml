@@ -1,39 +1,20 @@
-nightly_linux:
-  stage: nightly_test
-  variables:
-    CHANNEL: nightly
-  allow_failure: true
+nightly_linux_test:
   extends:
-    - .default_rules
+    - .default_rule
+    - .nightly_test_base
     - .linux_template
     - .linux_matrix_template
 
-nightly_tier3_linux:
-  stage: nightly_test
-  variables:
-    CHANNEL: nightly
-  allow_failure: true
+nightly_wasm32-wasi_test:
   extends:
-    - .default_rules
-    - .tier3_linux_template
-    - .tier3_linux_matrix_template
+    - .default_rule
+    - .nightly_test_base
+    - .wasm32-wasi_template
+    - .wasm32-wasi_matrix_template
 
-nightly_wasm-wasi:
-  stage: nightly_test
-  variables:
-    CHANNEL: nightly
-  allow_failure: true
+nightly_windows-msvc_test:
   extends:
-    - .default_rules
-    - .wasm-wasi_template
-    - .wasm-wasi_matrix_template
-
-nightly_windows-msvc:
-  stage: nightly_test
-  variables:
-    CHANNEL: nightly
-  allow_failure: true
-  extends:
-    - .default_rules
+    - .default_rule
+    - .nightly_test_base
     - .windows-msvc_template
     - .windows-msvc_matrix_template

@@ -1,0 +1,25 @@
+.stable_test_base:
+  stage: stable_test
+  variables:
+    CHANNEL: ${STABLE_RUST_VERSION}
+
+.nightly_test_base:
+  stage: nightly_test
+  variables:
+    CHANNEL: nightly
+  allow_failure: true
+
+include:
+  - local: .gitlab/ci/stage/pre.yaml
+  - local: .gitlab/ci/stage/stable_test.yaml
+    rules:
+      - if: $DISABLE_STABLE_TEST != "true"
+  - local: .gitlab/ci/stage/nightly_test.yaml
+    rules:
+      - if: $ENABLE_NIGHTLY_TEST == "true"
+  - local: .gitlab/ci/stage/tier3_build.yaml
+    rules:
+      - if: $ENABLE_TIER3_BUILD == "true"
+  - local: .gitlab/ci/stage/tier3_test.yaml
+    rules:
+      - if: $ENABLE_TIER3_TEST == "true"

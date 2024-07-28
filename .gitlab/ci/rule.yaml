@@ -1,0 +1,36 @@
+.disable_merge_request_event: &disable_merge_request_event
+  - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    when: never
+
+.file_change_rule: &file_change_rule
+  - changes:
+    - .gitlab-ci.yml
+    - .gitlab/ci/**/*.yaml
+    - .cargo/config.toml
+    - Cargo.toml
+    - crate/**/*.rs
+    - src/**/*.rs
+
+workflow:
+  rules:
+    - *disable_merge_request_event
+    - *file_change_rule
+
+.linux_test_rule:
+  rules:
+    - *disable_merge_request_event
+    - if: $DISABLE_LINUX_TEST == "true"
+      when: never
+    - *file_change_rule
+
+.wasm32_test_rule:
+  rules:
+    - *disable_merge_request_event
+    - if: $DISABLE_WASM32_TEST == "true"
+      when: never
+    - *file_change_rule
+
+.windows-msvc_rule:
+  rules:
+    - *disable_merge_request_event
+    - if: $ENABLE_WINDOWS_MSVC_TEST == "true"

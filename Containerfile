@@ -1,11 +1,11 @@
-FROM docker.io/ubuntu:23.04
+FROM docker.io/library/rust:1.80.0-slim-bookworm
 
 WORKDIR /workdir
 
 ENV CARGO_HOME='/cargo' \
     PATH="${PATH}:/cargo/bin" \
-    STABLE_RUST_VERSION='1.72.1' \
-    WASMTIME_VERSION='13.0.0' \
+    STABLE_RUST_VERSION='1.80.0' \
+    WASMTIME_VERSION='23.0.1' \
     TARGETS='\
         aarch64-unknown-linux-gnu \
         aarch64-unknown-linux-musl \
@@ -23,14 +23,6 @@ ENV CARGO_HOME='/cargo' \
         i586-unknown-linux-musl \
         i686-unknown-linux-gnu \
         i686-unknown-linux-musl \
-        mips-unknown-linux-gnu \
-        mips-unknown-linux-musl \
-        mips64-unknown-linux-gnuabi64 \
-        mips64-unknown-linux-muslabi64 \
-        mips64el-unknown-linux-gnuabi64 \
-        mips64el-unknown-linux-muslabi64 \
-        mipsel-unknown-linux-gnu \
-        mipsel-unknown-linux-musl \
         powerpc-unknown-linux-gnu \
         powerpc64-unknown-linux-gnu \
         powerpc64le-unknown-linux-gnu \
@@ -40,38 +32,42 @@ ENV CARGO_HOME='/cargo' \
         thumbv7neon-unknown-linux-gnueabihf \
         x86_64-unknown-linux-gnu \
         x86_64-unknown-linux-musl \
-        wasm32-wasi'
+        wasm32-wasi \
+        wasm32-wasip1'
 
 RUN \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update -y && \
     apt-get install -y \
         curl \
         qemu-user \
         xz-utils \
         gcc-aarch64-linux-gnu \
+        gcc-i686-linux-gnu \
+        gcc \
         gcc-arm-linux-gnueabi \
         gcc-arm-linux-gnueabihf \
-        gcc-arm-linux-gnueabi \
-        gcc-arm-linux-gnueabi \
-        gcc-arm-linux-gnueabihf \
-        gcc-i686-linux-gnu \
-        gcc-i686-linux-gnu \
-        gcc-mips-linux-gnu \
-        gcc-mipsel-linux-gnu \
-        gcc-mips64-linux-gnuabi64 \
-        gcc-mips64el-linux-gnuabi64 \
         gcc-powerpc-linux-gnu \
         gcc-powerpc64-linux-gnu \
         gcc-powerpc64le-linux-gnu \
         gcc-riscv64-linux-gnu \
         gcc-s390x-linux-gnu \
         gcc-sparc64-linux-gnu \
-        gcc
+        # Tier 3
+        gcc-mips-linux-gnu \
+        gcc-mips64-linux-gnuabi64 \
+        gcc-mipsisa32r6-linux-gnu \
+        gcc-mipsisa64r6-linux-gnuabi64 \
+        gcc-mipsel-linux-gnu \
+        gcc-mips64el-linux-gnuabi64 \
+        gcc-mipsisa32r6el-linux-gnu \
+        gcc-mipsisa64r6el-linux-gnuabi64 
 
 RUN \
     curl -L "https://github.com/bytecodealliance/wasmtime/releases/download/v${WASMTIME_VERSION}/wasmtime-v${WASMTIME_VERSION}-x86_64-linux.tar.xz" > wasmtime-v${WASMTIME_VERSION}-x86_64-linux.tar.xz && \
     tar -xvf wasmtime-v${WASMTIME_VERSION}-x86_64-linux.tar.xz && \
-    mv wasmtime-v${WASMTIME_VERSION}-x86_64-linux/wasmtime /usr/bin/
+    mv wasmtime-v${WASMTIME_VERSION}-x86_64-linux/wasmtime /usr/local/bin/
 
 RUN \
     curl https://sh.rustup.rs -sSf > install.sh && \

@@ -8,7 +8,7 @@ runner = 'qemu-aarch64 -L /usr/aarch64-linux-gnu/'
 linker = 'i686-linux-gnu-gcc'
 runner = 'qemu-i386 -L /usr/i686-linux-gnu/'
 
-# Tier 2
+# Tier 2 with Host Tools
 
 [target.aarch64-unknown-linux-musl]
 linker = 'aarch64-linux-gnu-gcc'
@@ -25,10 +25,6 @@ runner = 'qemu-arm -L /usr/arm-linux-gnueabihf/'
 [target.armv7-unknown-linux-gnueabihf]
 linker = 'arm-linux-gnueabihf-gcc'
 runner = 'qemu-arm -L /usr/arm-linux-gnueabihf/'
-
-[target.i686-unknown-linux-musl]
-linker = 'i686-linux-gnu-gcc'
-runner = 'qemu-i386 -L /usr/i686-linux-gnu/'
 
 [target.powerpc-unknown-linux-gnu]
 linker = 'powerpc-linux-gnu-gcc'
@@ -50,7 +46,7 @@ runner = 'qemu-riscv64 -L /usr/riscv64-linux-gnu/'
 linker = 's390x-linux-gnu-gcc'
 runner = 'qemu-s390x -L /usr/s390x-linux-gnu/'
 
-# Tier 2.5
+# Tier 2 without Host Tools
 
 [target.arm-unknown-linux-musleabi]
 linker = 'arm-linux-gnueabi-gcc'
@@ -88,6 +84,10 @@ runner = 'qemu-i386 -L /usr/i686-linux-gnu/'
 linker = 'i686-linux-gnu-gcc'
 runner = 'qemu-i386 -L /usr/i686-linux-gnu/'
 
+[target.i686-unknown-linux-musl]
+linker = 'i686-linux-gnu-gcc'
+runner = 'qemu-i386 -L /usr/i686-linux-gnu/'
+
 [target.sparc64-unknown-linux-gnu]
 linker = 'sparc64-linux-gnu-gcc'
 runner = 'qemu-sparc64 -L /usr/sparc64-linux-gnu/'
@@ -97,6 +97,9 @@ linker = 'arm-linux-gnueabihf-gcc'
 runner = 'qemu-arm -L /usr/arm-linux-gnueabihf/'
 
 [target.wasm32-wasi]
+runner = 'wasmtime'
+
+[target.wasm32-wasip1]
 runner = 'wasmtime'
 
 # Tier3
@@ -137,7 +140,6 @@ runner = 'qemu-mipsel -L /usr/mipsel-linux-gnu/'
 [target.mipsel-unknown-linux-musl]
 linker = 'mipsel-linux-gnu-gcc'
 runner = 'qemu-mipsel -L /usr/mipsel-linux-gnu/'
-rustflags = ["-C", "target-feature=+crt-static"]
 
 [target.mipsisa32r6-unknown-linux-gnu]
 linker = 'mipsisa32r6-linux-gnu-gcc'
@@ -154,3 +156,27 @@ runner = 'qemu-mips64 -L /usr/mipsisa64r6-linux-gnuabi64/'
 [target.mipsisa64r6el-unknown-linux-gnuabi64]
 linker = 'mipsisa64r6el-linux-gnuabi64-gcc'
 runner = 'qemu-mips64el -L /usr/mipsisa64r6el-linux-gnuabi64/'
+
+[target.powerpc-unknown-linux-musl]
+linker = 'powerpc-linux-gnu-gcc'
+runner = 'qemu-ppc -L /usr/powerpc-linux-gnu/'
+
+[target.powerpc64-unknown-linux-musl]
+linker = 'powerpc64-linux-gnu-gcc'
+runner = 'qemu-ppc64 -L /usr/powerpc64-linux-gnu/'
+
+[target.powerpc64le-unknown-linux-musl]
+linker = 'powerpc64le-linux-gnu-gcc'
+runner = 'qemu-ppc64le -L /usr/powerpc64le-linux-gnu/'
+
+[target.riscv64gc-unknown-linux-musl]
+linker = 'riscv64-linux-gnu-gcc'
+runner = 'qemu-riscv64 -L /usr/riscv64-linux-gnu/'
+
+[target.s390x-unknown-linux-musl]
+linker = 's390x-linux-gnu-gcc'
+runner = 'qemu-s390x -L /usr/s390x-linux-gnu/'
+
+[target.thumbv7neon-unknown-linux-musleabihf]
+linker = 'arm-linux-gnueabihf-gcc'
+runner = 'qemu-arm -L /usr/arm-linux-gnueabihf/'

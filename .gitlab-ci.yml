@@ -2,31 +2,22 @@ stages:
   - .pre
   - stable_test
   - nightly_test
+  - tier3_build
+  - tier3_test
 
 variables:
-  UBUNTU_IMAGE: docker.io/ubuntu:23.04
   CARGO_HOME: ${CI_PROJECT_DIR}/cargo
-  STABLE_RUST_VERSION: "1.72.1"
-  WASMTIME_VERSION: "13.0.0"
+  STABLE_RUST_VERSION: "1.80.0"
+  WASMTIME_VERSION: "23.0.1"
 
-.default_rules:
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: never
-    - if: $CI_PIPELINE_SOURCE == "push"
-      changes:
-        - .gitlab-ci.yml
-        - .gitlab/ci/**/*.yaml
-        - .cargo/config.toml
-        - Cargo.toml
-        - crate/**/*.rs
-        - src/**/*.rs
-    - when: always
+default:
+  image: docker.io/library/rust:${STABLE_RUST_VERSION}-slim-bookworm
+  cache:
+    key: ${CI_JOB_STAGE}-${TARGET}
+    paths:
+      - target/${TARGET}
 
 include:
   - local: .gitlab/ci/target.yaml
-  - local: .gitlab/ci/stage/pre.yaml
-  - local: .gitlab/ci/stage/stable_test.yaml
-  - local: .gitlab/ci/stage/nightly_test.yaml
-    rules:
-      - if: $RUN_NIGHTLY_TESTS == "true"
+  - local: .gitlab/ci/rule.yaml
+  - local: .gitlab/ci/stage.yaml

@@ -1,4 +1,4 @@
-CONTAINER_NAME = libre_crypto
+CONTAINER_NAME = crypto
 
 .PHONY: p.build
 p.build:

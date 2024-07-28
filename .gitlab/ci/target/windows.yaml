@@ -1,0 +1,19 @@
+.windows-msvc_template:
+  tags:
+    - saas-windows-medium-amd64
+  before_script:
+    - Remove-Item Alias:curl
+    - Invoke-WebRequest -Uri https://win.rustup.rs/x86_64 -OutFile rustup-init.exe
+    - ./rustup-init.exe -y --profile minimal --default-toolchain ${CHANNEL} -t ${TARGET}
+    - $ENV:Path += ";${CI_PROJECT_DIR}/cargo/bin"
+  script:
+    - cargo test --workspace --target ${TARGET}
+
+.windows-msvc_matrix_template:
+  parallel:
+    matrix:
+      # Tier 1
+      - TARGET: i686-pc-windows-msvc
+      - TARGET: x86_64-pc-windows-msvc
+      # Tier 2
+      - TARGET: i586-pc-windows-msvc

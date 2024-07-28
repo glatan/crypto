@@ -1,8 +1,5 @@
 prepare_test:
   stage: .pre
-  image: docker.io/rust:${STABLE_RUST_VERSION}-slim-buster
-  extends:
-    - .default_rules
   before_script:
     - rustup component add clippy rustfmt
   script:

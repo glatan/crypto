@@ -6,4 +6,4 @@ edition = "2021"
 
 [dependencies]
 clap = { version = "2", features = ["yaml"] }
-libre_crypto = { path = "../../", features = ["all"] }
+crypto = { path = "../../", features = ["all"] }

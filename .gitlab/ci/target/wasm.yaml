@@ -1,0 +1,19 @@
+.wasm32-wasi_template:
+  before_script:
+    - set -ex
+    - rustup set profile minimal
+    - rustup default ${CHANNEL}
+    - rustup target add ${TARGET}
+    - apt-get update -y
+    - apt-get install -y curl xz-utils
+    - curl -L "https://github.com/bytecodealliance/wasmtime/releases/download/v${WASMTIME_VERSION}/wasmtime-v${WASMTIME_VERSION}-x86_64-linux.tar.xz" > wasmtime-v${WASMTIME_VERSION}-x86_64-linux.tar.xz
+    - tar -xvf wasmtime-v${WASMTIME_VERSION}-x86_64-linux.tar.xz
+    - mv wasmtime-v${WASMTIME_VERSION}-x86_64-linux/wasmtime /usr/local/bin/
+  script:
+    - cargo test --workspace --target ${TARGET}
+
+.wasm32-wasi_matrix_template:
+  parallel:
+    matrix:
+      - TARGET: wasm32-wasi
+      - TARGET: wasm32-wasip1

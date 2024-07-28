@@ -1,0 +1,20 @@
+tier3_linux_build:
+  stage: tier3_build
+  variables:
+    CHANNEL: nightly
+  allow_failure: true
+  before_script:
+    - set -ex
+    - rustup set profile minimal
+    - rustup default ${CHANNEL}
+    - rustup component add rust-src
+    - >
+      if [[ ${#PACKAGES[@]} -ne 0 ]]; then
+        apt-get update -y
+        apt-get install -y ${PACKAGES};
+      fi
+  script:
+    - cargo build --workspace -Z build-std -vv --target ${TARGET}
+  extends:
+    - .default_rule
+    - .tier3_linux_matrix_template

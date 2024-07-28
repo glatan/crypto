@@ -2,6 +2,8 @@ stages:
   - .pre
   - stable_test
   - nightly_test
+  - tier3_build
+  - tier3_test
 
 variables:
   CARGO_HOME: ${CI_PROJECT_DIR}/cargo
@@ -10,8 +12,12 @@ variables:
 
 default:
   image: docker.io/library/rust:${STABLE_RUST_VERSION}-slim-bookworm
+  cache:
+    key: ${CI_JOB_STAGE}-${TARGET}
+    paths:
+      - target/${TARGET}
 
-.default_rules:
+.default_rule:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
@@ -27,8 +33,4 @@ default:
 
 include:
   - local: .gitlab/ci/target.yaml
-  - local: .gitlab/ci/stage/pre.yaml
-  - local: .gitlab/ci/stage/stable_test.yaml
-  - local: .gitlab/ci/stage/nightly_test.yaml
-    rules:
-      - if: $RUN_NIGHTLY_TESTS == "true"
+  - local: .gitlab/ci/stage.yaml

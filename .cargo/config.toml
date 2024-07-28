@@ -8,7 +8,7 @@ runner = 'qemu-aarch64 -L /usr/aarch64-linux-gnu/'
 linker = 'i686-linux-gnu-gcc'
 runner = 'qemu-i386 -L /usr/i686-linux-gnu/'
 
-# Tier 2
+# Tier 2 with Host Tools
 
 [target.aarch64-unknown-linux-musl]
 linker = 'aarch64-linux-gnu-gcc'
@@ -25,10 +25,6 @@ runner = 'qemu-arm -L /usr/arm-linux-gnueabihf/'
 [target.armv7-unknown-linux-gnueabihf]
 linker = 'arm-linux-gnueabihf-gcc'
 runner = 'qemu-arm -L /usr/arm-linux-gnueabihf/'
-
-[target.i686-unknown-linux-musl]
-linker = 'i686-linux-gnu-gcc'
-runner = 'qemu-i386 -L /usr/i686-linux-gnu/'
 
 [target.powerpc-unknown-linux-gnu]
 linker = 'powerpc-linux-gnu-gcc'
@@ -50,7 +46,7 @@ runner = 'qemu-riscv64 -L /usr/riscv64-linux-gnu/'
 linker = 's390x-linux-gnu-gcc'
 runner = 'qemu-s390x -L /usr/s390x-linux-gnu/'
 
-# Tier 2.5
+# Tier 2 without Host Tools
 
 [target.arm-unknown-linux-musleabi]
 linker = 'arm-linux-gnueabi-gcc'
@@ -85,6 +81,10 @@ linker = 'i686-linux-gnu-gcc'
 runner = 'qemu-i386 -L /usr/i686-linux-gnu/'
 
 [target.i586-unknown-linux-musl]
+linker = 'i686-linux-gnu-gcc'
+runner = 'qemu-i386 -L /usr/i686-linux-gnu/'
+
+[target.i686-unknown-linux-musl]
 linker = 'i686-linux-gnu-gcc'
 runner = 'qemu-i386 -L /usr/i686-linux-gnu/'
 

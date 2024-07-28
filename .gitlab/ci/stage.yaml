@@ -12,6 +12,8 @@
 include:
   - local: .gitlab/ci/stage/pre.yaml
   - local: .gitlab/ci/stage/stable_test.yaml
+    rules:
+      - if: $DISABLE_STABLE_TEST != "true"
   - local: .gitlab/ci/stage/nightly_test.yaml
     rules:
       - if: $ENABLE_NIGHTLY_TEST == "true"

@@ -1,20 +1,20 @@
 nightly_linux_test:
   extends:
-    - .default_rule
+    - .linux_test_rule
     - .nightly_test_base
     - .linux_template
     - .linux_matrix_template
 
 nightly_wasm32-wasi_test:
   extends:
-    - .default_rule
+    - .wasm32_test_rule
     - .nightly_test_base
     - .wasm32-wasi_template
     - .wasm32-wasi_matrix_template
 
 nightly_windows-msvc_test:
   extends:
-    - .default_rule
+    - .windows-msvc_rule
     - .nightly_test_base
     - .windows-msvc_template
     - .windows-msvc_matrix_template

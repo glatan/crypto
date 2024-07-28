@@ -1,7 +1,5 @@
 prepare_test:
   stage: .pre
-  extends:
-    - .default_rule
   before_script:
     - rustup component add clippy rustfmt
   script:

@@ -16,5 +16,4 @@ tier3_linux_build:
   script:
     - cargo build --workspace -Z build-std -vv --target ${TARGET}
   extends:
-    - .default_rule
     - .tier3_linux_matrix_template

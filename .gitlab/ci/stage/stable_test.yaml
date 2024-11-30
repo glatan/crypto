@@ -4,8 +4,6 @@ stable_linux_test:
     - .stable_test_base
     - .linux_template
     - .linux_matrix_template
-  rules:
-    - if: $DISABLE_LINUX_TEST != "true"
 
 stable_wasm32-wasi_test:
   extends:
@@ -13,8 +11,6 @@ stable_wasm32-wasi_test:
     - .stable_test_base
     - .wasm32-wasi_template
     - .wasm32-wasi_matrix_template
-  rules:
-    - if: $DISABLE_WASM32_TEST != "true"
 
 stable_windows-msvc_test:
   extends:
@@ -22,23 +18,17 @@ stable_windows-msvc_test:
     - .stable_test_base
     - .windows-msvc_template
     - .windows-msvc_matrix_template
-  rules:
-    - if: $ENABLE_WINDOWS_MSVC_TEST == "true"
 
 stable_windows-gnu_test:
   extends:
-    - .default_rule
+    - .windows-gnu_rule
     - .stable_test_base
     - .windows-msys2_template
     - .windows-gnu_matrix_template
-  rules:
-    - if: $ENABLE_WINDOWS_GNU_TEST == "true"
 
 stable_windows-gnullvm_test:
   extends:
-    - .default_rule
+    - .windows-gnullvm_rule
     - .stable_test_base
     - .windows-msys2_template
     - .windows-gnullvm_matrix_template
-  rules:
-    - if: $ENABLE_WINDOWS_GNULLVM_TEST == "true"

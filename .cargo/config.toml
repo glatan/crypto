@@ -4,9 +4,15 @@
 linker = 'aarch64-linux-gnu-gcc'
 runner = 'qemu-aarch64 -L /usr/aarch64-linux-gnu/'
 
+[target.i686-pc-windows-gnu]
+linker = 'i686-w64-mingw32-gcc'
+
 [target.i686-unknown-linux-gnu]
 linker = 'i686-linux-gnu-gcc'
 runner = 'qemu-i386 -L /usr/i686-linux-gnu/'
+
+[target.x86_64-pc-windows-gnu]
+linker = 'x86_64-w64-mingw32-gcc'
 
 # Tier 2 with Host Tools
 
@@ -48,6 +54,9 @@ runner = 'qemu-s390x -L /usr/s390x-linux-gnu/'
 
 # Tier 2 without Host Tools
 
+[target.aarch64-pc-windows-gnullvm]
+linker = 'lld'
+
 [target.arm-unknown-linux-musleabi]
 linker = 'arm-linux-gnueabi-gcc'
 runner = 'qemu-arm -L /usr/arm-linux-gnueabi/'
@@ -84,6 +93,9 @@ runner = 'qemu-i386 -L /usr/i686-linux-gnu/'
 linker = 'i686-linux-gnu-gcc'
 runner = 'qemu-i386 -L /usr/i686-linux-gnu/'
 
+[target.i686-pc-windows-gnullvm]
+linker = 'lld'
+
 [target.i686-unknown-linux-musl]
 linker = 'i686-linux-gnu-gcc'
 runner = 'qemu-i386 -L /usr/i686-linux-gnu/'
@@ -101,6 +113,9 @@ runner = 'wasmtime'
 
 [target.wasm32-wasip1]
 runner = 'wasmtime'
+
+[target.x86_64-pc-windows-gnullvm]
+linker = 'lld'
 
 # Tier3
 

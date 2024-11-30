@@ -14,6 +14,22 @@
 
 https://docs.gitlab.com/ee/ci/runners/hosted_runners/windows.html
 
+### i686-pc-windows-gnu
+
+*-pc-windows-msvc + MSYS2(MINGW32)
+
+### x86_64-pc-windows-gnu
+
+*-pc-windows-msvc + MSYS2(MINGW64)
+
+### i686-pc-windows-gnullvm
+
+*-pc-windows-msvc + MSYS2(CLANG32)
+
+### x86_64-pc-windows-gnullvm
+
+*-pc-windows-msvc + MSYS2(CLANG64)
+
 ### wasm32-*
 
 - OS: Debian bookworn
@@ -27,8 +43,10 @@ https://docs.gitlab.com/ee/ci/runners/hosted_runners/windows.html
 |Target|Linker|Runner + Option|Note|
 |-|-|-|-|
 |aarch64-unknown-linux-gnu|aarch64-linux-gnu-gcc|qemu-aarch64 -L /usr/aarch64-linux-gnu/||
+|i686-pc-windows-gnu|i686-w64-mingw32-gcc|||
 |i686-pc-windows-msvc||||
 |i686-unknown-linux-gnu|i686-linux-gnu-gcc|qemu-i386 -L /usr/i686-linux-gnu/||
+|x86_64-pc-windows-gnu|x86_64-w64-mingw32-gcc|||
 |x86_64-pc-windows-msvc||||
 |x86_64-unknown-linux-gnu||||
 
@@ -51,6 +69,7 @@ https://docs.gitlab.com/ee/ci/runners/hosted_runners/windows.html
 
 |Target|Linker|Runner + Option|Note|
 |-|-|-|-|
+|aarch64-pc-windows-gnullvm||lld||
 |arm-unknown-linux-musleabi|arm-linux-gnueabi-gcc|qemu-arm -L /usr/arm-linux-gnueabi/||
 |arm-unknown-linux-musleabihf|arm-linux-gnueabihf-gcc|qemu-arm -L /usr/arm-linux-gnueabihf/||
 |armv5te-unknown-linux-gnueabi|arm-linux-gnueabi-gcc|qemu-arm -L /usr/arm-linux-gnueabi/||
@@ -60,11 +79,13 @@ https://docs.gitlab.com/ee/ci/runners/hosted_runners/windows.html
 |armv7-unknown-linux-musleabihf|arm-linux-gnueabihf-gcc|qemu-arm -L /usr/arm-linux-gnueabihf/||
 |i586-unknown-linux-gnu|i686-linux-gnu-gcc|qemu-i386 -L /usr/i686-linux-gnu/||
 |i586-unknown-linux-musl|i686-linux-gnu-gcc|qemu-i386 -L /usr/i686-linux-gnu/||
+|i686-pc-windows-gnullvm||lld||
 |i686-unknown-linux-musl|i686-linux-gnu-gcc|qemu-i386 -L /usr/i686-linux-gnu/||
 |sparc64-unknown-linux-gnu|sparc64-linux-gnu-gcc|qemu-sparc64 -L /usr/sparc64-linux-gnu/||
 |thumbv7neon-unknown-linux-gnueabihf|arm-linux-gnueabihf-gcc|qemu-arm -L /usr/arm-linux-gnueabihf/||
 |wasm32-wasi||wasmtime||
 |wasm32-wasip1||wasmtime||
+|x86_64-pc-windows-gnullvm||lld||
 
 ### Tier 3
 

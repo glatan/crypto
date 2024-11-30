@@ -4,6 +4,8 @@ nightly_linux_test:
     - .nightly_test_base
     - .linux_template
     - .linux_matrix_template
+  rules:
+    - if: $DISABLE_LINUX_TESTR != "true"
 
 nightly_wasm32-wasi_test:
   extends:
@@ -11,6 +13,8 @@ nightly_wasm32-wasi_test:
     - .nightly_test_base
     - .wasm32-wasi_template
     - .wasm32-wasi_matrix_template
+  rules:
+    - if: $DISABLE_WASM32_TEST != "true"
 
 nightly_windows-msvc_test:
   extends:
@@ -18,3 +22,23 @@ nightly_windows-msvc_test:
     - .nightly_test_base
     - .windows-msvc_template
     - .windows-msvc_matrix_template
+  rules:
+    - if: $ENABLE_WINDOWS_MSVC_TEST == "true"
+
+nightly_windows-gnu_test:
+  extends:
+    - .default_rule
+    - .nightly_test_base
+    - .windows-msys2_template
+    - .windows-gnu_matrix_template
+  rules:
+    - if: $ENABLE_WINDOWS_GNU_TEST == "true"
+
+nightly_windows-gnullvm_test:
+  extends:
+    - .default_rule
+    - .nightly_test_base
+    - .windows-msys2_template
+    - .windows-gnullvm_matrix_template
+  rules:
+    - if: $ENABLE_WINDOWS_GNULLVM_TEST == "true"

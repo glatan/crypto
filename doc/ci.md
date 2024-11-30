@@ -28,6 +28,10 @@ GitLab Runnerの設定について
   - wasm32-*ターゲットのテストジョブをスキップする
 - ENABLE_WINDOWS_MSVC_TEST: true
   - *-pc-windows-msvcターゲットのテストジョブを実行する
+- ENABLE_WINDOWS_GNU_TEST: true
+  - *-pc-windows-gnuターゲットのテストジョブを実行する
+- ENABLE_WINDOWS_GNULLVM_TEST: true
+  - *-pc-windows-gnullvmターゲットのテストジョブを実行する
 
 ## 実行環境
 

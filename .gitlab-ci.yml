@@ -6,9 +6,10 @@ stages:
   - tier3_test
 
 variables:
-  CARGO_HOME: ${CI_PROJECT_DIR}/cargo
-  STABLE_RUST_VERSION: "1.80.0"
-  WASMTIME_VERSION: "23.0.1"
+  CARGO_HOME: "${CI_PROJECT_DIR}/cargo"
+  STABLE_RUST_VERSION: '1.80.0'
+  WASMTIME_VERSION: '23.0.1'
+  MSYS2_VERSION: '2024-07-27'
 
 default:
   image: docker.io/library/rust:${STABLE_RUST_VERSION}-slim-bookworm

@@ -44,6 +44,8 @@ all=[
     "poly1305",
     # Stream Cipher
     "chacha",
+    # Utils,
+    "bignumber",
 ]
 
 [dependencies]
@@ -65,13 +67,8 @@ cryptographic_hash_function = { path = "crate/cryptographic_hash_function/crypto
 poly1305 = { path = "crate/mac/poly1305", optional = true }
 # Stream Cipher
 chacha = { path = "crate/stream_cipher/chacha", optional = true }
-
-[lints]
-workspace = true
-
-[workspace.lints.clippy]
-missing_const_for_fn = "deny"
-dead_code = "allow"
+# Utils
+bignumber = { path = "crate/utils/bignumber", optional = true }
 
 [workspace]
 members = [
@@ -94,6 +91,8 @@ members = [
     "crate/mac/poly1305",
     # Stream Cipher
     "crate/stream_cipher/chacha",
+    # Utils
+    "crate/utils/bignumber",
 ]
 exclude = [
     "examples",

@@ -34,3 +34,13 @@ workflow:
   rules:
     - *disable_merge_request_event
     - if: $ENABLE_WINDOWS_MSVC_TEST == "true"
+
+.windows-gnu_rule:
+  rules:
+    - *disable_merge_request_event
+    - if: $ENABLE_WINDOWS_GNU_TEST == "true"
+
+.windows-gnullvm_rule:
+  rules:
+    - *disable_merge_request_event
+    - if: $ENABLE_WINDOWS_GNULLVM_TEST == "true"

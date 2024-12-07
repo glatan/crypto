@@ -1,10 +1,10 @@
-FROM docker.io/library/rust:1.80.0-slim-bookworm
+FROM docker.io/library/rust:1.83.0-slim-bookworm
 
 WORKDIR /workdir
 
 ENV CARGO_HOME='/cargo' \
     PATH="${PATH}:/cargo/bin" \
-    STABLE_RUST_VERSION='1.80.0' \
+    STABLE_RUST_VERSION='1.83.0' \
     WASMTIME_VERSION='23.0.1' \
     TARGETS='\
         aarch64-unknown-linux-gnu \
@@ -32,8 +32,8 @@ ENV CARGO_HOME='/cargo' \
         thumbv7neon-unknown-linux-gnueabihf \
         x86_64-unknown-linux-gnu \
         x86_64-unknown-linux-musl \
-        wasm32-wasi \
-        wasm32-wasip1'
+        wasm32-wasip1 \
+        wasm32-wasip1-threads'
 
 RUN \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
@@ -70,11 +70,8 @@ RUN \
     mv wasmtime-v${WASMTIME_VERSION}-x86_64-linux/wasmtime /usr/local/bin/
 
 RUN \
-    curl https://sh.rustup.rs -sSf > install.sh && \
-    sh install.sh -y --default-toolchain ${STABLE_RUST_VERSION} --profile minimal && \
     rustup target add ${TARGETS} && \
     rustup default nightly && \
-    rustup target add ${TARGETS}
-
-RUN \
-    rustup component add rust-src
+    rustup target add ${TARGETS} && \
+    rustup component add rust-src && \
+    rustup default ${STABLE_RUST_VERSION}

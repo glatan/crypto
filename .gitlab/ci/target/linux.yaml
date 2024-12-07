@@ -1,8 +1,6 @@
 .linux_template:
   before_script:
     - set -ex
-    - rustup set profile minimal
-    - rustup default ${CHANNEL}
     - rustup target add ${TARGET}
     - >
       if [[ ${#PACKAGES[@]} -ne 0 ]]; then

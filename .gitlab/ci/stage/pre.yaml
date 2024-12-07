@@ -1,5 +1,6 @@
 prepare_test:
   stage: .pre
+  image: docker.io/library/rust:${STABLE_RUST_VERSION}-slim-bookworm
   before_script:
     - rustup component add clippy rustfmt
   script:

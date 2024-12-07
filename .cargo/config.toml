@@ -108,10 +108,10 @@ runner = 'qemu-sparc64 -L /usr/sparc64-linux-gnu/'
 linker = 'arm-linux-gnueabihf-gcc'
 runner = 'qemu-arm -L /usr/arm-linux-gnueabihf/'
 
-[target.wasm32-wasi]
+[target.wasm32-wasip1]
 runner = 'wasmtime'
 
-[target.wasm32-wasip1]
+[target.wasm32-wasip1-threads]
 runner = 'wasmtime'
 
 [target.x86_64-pc-windows-gnullvm]

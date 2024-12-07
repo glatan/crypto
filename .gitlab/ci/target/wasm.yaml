@@ -1,8 +1,6 @@
 .wasm32-wasi_template:
   before_script:
     - set -ex
-    - rustup set profile minimal
-    - rustup default ${CHANNEL}
     - rustup target add ${TARGET}
     - apt-get update -y
     - apt-get install -y curl xz-utils
@@ -15,5 +13,5 @@
 .wasm32-wasi_matrix_template:
   parallel:
     matrix:
-      - TARGET: wasm32-wasi
       - TARGET: wasm32-wasip1
+      - TARGET: wasm32-wasip1-threads

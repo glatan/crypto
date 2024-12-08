@@ -1,6 +1,9 @@
 #![no_std]
 
 extern crate alloc;
+mod fixed_output_function;
+
+pub use fixed_output_function::{FixedOutput, FixedOutputFunction};
 
 use alloc::{string::String, vec::Vec};
 use core::fmt::Write;

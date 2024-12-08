@@ -2,11 +2,8 @@
 
 extern crate alloc;
 
-use alloc::vec::Vec;
-use core::cmp::Ordering;
-
-use cryptographic_hash_function::CryptographicHashFunction;
-use merkle_damgard::impl_md_flow;
+use byte::{u32words_from_le_bytes, Buffer};
+use cryptographic_hash_function::{FixedOutput, FixedOutputFunction};
 
 #[rustfmt::skip]
 const T: [u32; 64] = [
@@ -84,11 +81,17 @@ const fn round4(a: u32, b: u32, c: u32, d: u32, k: u32, s: u32, t: u32) -> u32 {
     )
 }
 
-pub struct Md5 {
+type Block = [u32; 16];
+const BLOCK_BYTE_LEN: usize = core::mem::size_of::<u32>() * 16;
+const DIGEST_LEN: usize = core::mem::size_of::<u32>() * 4;
+
+pub struct Md5<'a> {
     status: [u32; 4],
+    buffer: Buffer<'a, BLOCK_BYTE_LEN>,
+    message_len: u64,
 }
 
-impl Md5 {
+impl<'a> Md5<'a> {
     pub fn new() -> Self {
         Self::default()
     }
@@ -172,21 +175,77 @@ impl Md5 {
     }
 }
 
-impl Default for Md5 {
+impl<'a> Default for Md5<'a> {
     fn default() -> Self {
         Self {
             status: [0x6745_2301, 0xEFCD_AB89, 0x98BA_DCFE, 0x1032_5476],
+            buffer: Buffer::new(),
+            message_len: 0,
         }
     }
 }
 
-impl CryptographicHashFunction for Md5 {
-    fn hash_to_bytes(&mut self, message: &[u8]) -> Vec<u8> {
-        impl_md_flow!(u32=> self, message, from_le_bytes, to_le_bytes);
-        self.status[0..4]
-            .iter()
-            .flat_map(|byte| byte.to_le_bytes().to_vec())
-            .collect()
+impl<'a> FixedOutputFunction<DIGEST_LEN> for Md5<'a> {
+    fn update(&mut self, message: &[u8]) {
+        let mut used_bytes_for_ = self.buffer.fill_bytes(message);
+        if self.buffer.full_filled() {
+            let mut block = [0; 16];
+            let first_block = self.buffer.chunk();
+            u32words_from_le_bytes!(block, first_block);
+            self.message_len += BLOCK_BYTE_LEN as u64 * 8;
+            self.compress(&block);
+
+            for chunk in message[used_bytes..].chunks_exact(BLOCK_BYTE_LEN) {
+                let mut block = [0; 16];
+                u32words_from_le_bytes!(block, chunk);
+                self.message_len += BLOCK_BYTE_LEN as u64 * 8;
+                used_bytes += BLOCK_BYTE_LEN;
+                self.compress(&block);
+            }
+            self.buffer.fill_bytes(&message[used_bytes..]);
+        }
+    }
+    fn finalize(&mut self) -> FixedOutput<DIGEST_LEN> {
+        let reminder = self.buffer.reminder();
+        let reminder_len = reminder.len();
+        self.message_len += reminder_len as u64 * 8;
+
+        let min_padding_len = core::mem::size_of::<u64>() + 1;
+        let needs_two_block: bool =
+            reminder_len > ((core::mem::size_of::<u64>() * 8) - min_padding_len);
+
+        if needs_two_block {
+            // two block
+            let mut block = [0; 16];
+            let mut bytes = [0u8; BLOCK_BYTE_LEN];
+            bytes[..reminder_len].copy_from_slice(reminder);
+            bytes[reminder_len] = 0x80;
+            u32words_from_le_bytes!(block, bytes);
+            self.compress(&block);
+
+            let mut bytes = [0u8; BLOCK_BYTE_LEN];
+            bytes[BLOCK_BYTE_LEN - core::mem::size_of::<u64>()..]
+                .copy_from_slice(&self.message_len.to_le_bytes());
+            u32words_from_le_bytes!(block, bytes);
+            self.compress(&block);
+        } else {
+            // one block
+            let mut block = [0; 16];
+            let mut bytes = [0u8; BLOCK_BYTE_LEN];
+            bytes[..reminder_len].copy_from_slice(reminder);
+            bytes[reminder_len] = 0x80;
+            bytes[BLOCK_BYTE_LEN - core::mem::size_of::<u64>()..]
+                .copy_from_slice(&self.message_len.to_le_bytes());
+            u32words_from_le_bytes!(block, bytes);
+            self.compress(&block);
+        }
+
+        let mut digest = [0; DIGEST_LEN];
+        for i in 0..4 {
+            let start_at = i * core::mem::size_of::<u32>();
+            digest[start_at..start_at + 4].copy_from_slice(&self.status[i].to_le_bytes());
+        }
+        FixedOutput::new(digest)
     }
 }
 

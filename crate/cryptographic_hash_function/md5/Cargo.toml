@@ -12,6 +12,7 @@ repository.workspace = true
 workspace = true
 
 [dependencies]
+byte = { path = "../../utils/byte" }
 merkle_damgard = { path = "../merkle_damgard" }
 cryptographic_hash_function = { path = "../cryptographic_hash_function" }
 

@@ -1,19 +1,86 @@
+// #[macro_export]
+// macro_rules! impl_test {
+//     ($self:ident, $test_name:ident, $test_cases:ident, $hasher:expr) => {
+//         mod $test_name {
+//             use super::$self;
+//             use super::$test_cases;
+//             use cryptographic_hash_function::CryptographicHashFunction;
+//             #[test]
+//             fn lower_hex() {
+//                 for (m, e) in $test_cases.iter() {
+//                     assert_eq!($hasher.hash_to_lowerhex(m), *e);
+//                 }
+//             }
+//         }
+//     };
+// }
+
 #[macro_export]
 macro_rules! impl_test {
     ($self:ident, $test_name:ident, $test_cases:ident, $hasher:expr) => {
         mod $test_name {
             use super::$self;
             use super::$test_cases;
-            use cryptographic_hash_function::CryptographicHashFunction;
+            use cryptographic_hash_function::FixedOutputFunction;
             #[test]
             fn lower_hex() {
                 for (m, e) in $test_cases.iter() {
-                    assert_eq!($hasher.hash_to_lowerhex(m), *e);
+                    let mut hasher = $hasher;
+                    hasher.update(m);
+                    let digest = hasher.finalize();
+                    assert_eq!(digest.to_lowerhex(), *e);
                 }
             }
         }
     };
 }
+
+// #[macro_export]
+// macro_rules! impl_short_msg_kat {
+//     ($module:ident, $T:ident, $test_cases:ident, $hasher:expr) => {
+//         #[allow(non_snake_case)]
+//         mod $T {
+//             use super::$test_cases;
+//             use cryptographic_hash_function::CryptographicHashFunction;
+//             use $module::$T;
+//             fn hex_to_bytes(s: &str) -> Vec<u8> {
+//                 // 上位4ビット
+//                 let s1: Vec<u8> = s
+//                     .chars()
+//                     .by_ref()
+//                     .enumerate()
+//                     .filter(|(i, _)| i % 2 == 0)
+//                     .map(|(_, c)| (c.to_digit(16).unwrap() as u8) << 4)
+//                     .collect();
+//                 // 下位4ビット
+//                 let s2: Vec<u8> = s
+//                     .chars()
+//                     .by_ref()
+//                     .enumerate()
+//                     .filter(|(i, _)| i % 2 == 1)
+//                     .map(|(_, c)| c.to_digit(16).unwrap() as u8)
+//                     .collect();
+//                 if s1.len() != s2.len() {
+//                     unreachable!();
+//                 }
+//                 let bytes = {
+//                     let mut bytes: Vec<u8> = Vec::new();
+//                     for i in 0..s1.len() {
+//                         bytes.push((s1[i] & 0b1111_0000) | (s2[i] & 0b0000_1111));
+//                     }
+//                     bytes
+//                 };
+//                 bytes
+//             }
+//             #[test]
+//             fn short_msg_kat() {
+//                 for (m, e) in $test_cases.iter() {
+//                     assert_eq!($hasher.hash_to_lowerhex(&hex_to_bytes(m)), *e);
+//                 }
+//             }
+//         }
+//     };
+// }
 
 #[macro_export]
 macro_rules! impl_short_msg_kat {
@@ -21,7 +88,7 @@ macro_rules! impl_short_msg_kat {
         #[allow(non_snake_case)]
         mod $T {
             use super::$test_cases;
-            use cryptographic_hash_function::CryptographicHashFunction;
+            use cryptographic_hash_function::FixedOutputFunction;
             use $module::$T;
             fn hex_to_bytes(s: &str) -> Vec<u8> {
                 // 上位4ビット
@@ -55,7 +122,10 @@ macro_rules! impl_short_msg_kat {
             #[test]
             fn short_msg_kat() {
                 for (m, e) in $test_cases.iter() {
-                    assert_eq!($hasher.hash_to_lowerhex(&hex_to_bytes(m)), *e);
+                    let mut hasher = $hasher;
+                    hasher.update(&hex_to_bytes(m));
+                    let digest = hasher.finalize();
+                    assert_eq!(digest.to_lowerhex(), *e);
                 }
             }
         }

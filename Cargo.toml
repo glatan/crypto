@@ -70,7 +70,9 @@ members = [
     "crate/cryptographic_hash_function/sha2",
     "crate/cryptographic_hash_function/sha3",
     "crate/cryptographic_hash_function/dev-util",
-    "crate/cryptographic_hash_function/merkle_damgard"
+    "crate/cryptographic_hash_function/merkle_damgard",
+    # Utils
+    "crate/utils/byte"
 ]
 exclude = [
     "examples",

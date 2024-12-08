@@ -7,3 +7,6 @@ rust-version.workspace = true
 license.workspace = true
 homepage.workspace = true
 repository.workspace = true
+
+[dependencies]
+byte = { path = "../../utils/byte" }

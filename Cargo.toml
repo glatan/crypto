@@ -24,6 +24,7 @@ default = [
 ]
 
 all=[
+    "lake",
     "blake",
     "blake2",
     "edonr",
@@ -40,6 +41,7 @@ all=[
 ]
 
 [dependencies]
+lake = { path = "crate/cryptographic_hash_function/lake", optional = true }
 blake = { path = "crate/cryptographic_hash_function/blake", optional = true }
 blake2 = { path = "crate/cryptographic_hash_function/blake2", optional = true }
 edonr = { path = "crate/cryptographic_hash_function/edonr", optional = true }
@@ -57,6 +59,7 @@ cryptographic_hash_function = { path = "crate/cryptographic_hash_function/crypto
 [workspace]
 members = [
     # Cryptographic Hash Function
+    "crate/cryptographic_hash_function/lake",
     "crate/cryptographic_hash_function/blake",
     "crate/cryptographic_hash_function/blake2",
     "crate/cryptographic_hash_function/edonr",

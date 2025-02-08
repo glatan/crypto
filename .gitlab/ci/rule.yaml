@@ -25,15 +25,17 @@ workflow:
 
 .tier2_with_host_tool_linux_test_rule:
   rules:
+    - if: $ENABLE_TIER2_WITH_HOST_TOOLS_LINUX_TEST != "true"
+      when: never
     - *disable_merge_request_event
     - *file_change_rule
-    - if: $ENABLE_TIER2_WITH_HOST_TOOLS_LINUX_TEST == "true"
 
 .tier2_without_host_tool_linux_test_rule:
   rules:
+    - if: $ENABLE_TIER2_WITHOUT_HOST_TOOLS_LINUX_TEST != "true"
+      when: never
     - *disable_merge_request_event
     - *file_change_rule
-    - if: $ENABLE_TIER2_WITHOUT_HOST_TOOLS_LINUX_TEST == "true"
 
 .wasm32_test_rule:
   rules:
@@ -44,15 +46,18 @@ workflow:
 
 .windows-msvc_rule:
   rules:
+    - if: $ENABLE_WINDOWS_MSVC_TEST != "true"
+      when: never
     - *disable_merge_request_event
-    - if: $ENABLE_WINDOWS_MSVC_TEST == "true"
 
 .windows-gnu_rule:
   rules:
+    - if: $ENABLE_WINDOWS_GNU_TEST != "true"
+      when: never
     - *disable_merge_request_event
-    - if: $ENABLE_WINDOWS_GNU_TEST == "true"
 
 .windows-gnullvm_rule:
   rules:
+    - if: $ENABLE_WINDOWS_GNULLVM_TEST != "true"
+      when: never
     - *disable_merge_request_event
-    - if: $ENABLE_WINDOWS_GNULLVM_TEST == "true"

@@ -26,14 +26,14 @@ workflow:
 .tier2_with_host_tool_linux_test_rule:
   rules:
     - *disable_merge_request_event
-    - if: $ENABLE_TIER2_WITH_HOST_TOOLS_LINUX_TEST == "true"
     - *file_change_rule
+    - if: $ENABLE_TIER2_WITH_HOST_TOOLS_LINUX_TEST == "true"
 
 .tier2_without_host_tool_linux_test_rule:
   rules:
     - *disable_merge_request_event
-    - if: $ENABLE_TIER2_WITHOUT_HOST_TOOLS_LINUX_TEST == "true"
     - *file_change_rule
+    - if: $ENABLE_TIER2_WITHOUT_HOST_TOOLS_LINUX_TEST == "true"
 
 .wasm32_test_rule:
   rules:

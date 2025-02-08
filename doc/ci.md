@@ -22,8 +22,12 @@ GitLab Runnerの設定について
 
 ### ターゲット制御
 
-- DISABLE_LINUX_TEST: true
-  - \*-linux-\*ターゲットのテストジョブをスキップする
+- DISABLE_TIER1_LINUX_TEST: true
+  - [Tier 1](https://doc.rust-lang.org/stable/rustc/platform-support.html#tier-1)の\*-linux-\*ターゲットのテストジョブをスキップする
+- ENABLE_TIER2_WITH_HOST_TOOLS_LINUX_TEST
+  - [Tier 2 with Host Tools](https://doc.rust-lang.org/stable/rustc/platform-support.html#tier-2-with-host-tools)の\*-linux-\*ターゲットのテストジョブを実行する
+- ENABLE_TIER2_WITHOUT_HOST_TOOLS_LINUX_TEST
+  - [Tier 2 without Host Tools](https://doc.rust-lang.org/stable/rustc/platform-support.html#tier-2-without-host-tools)の\*-linux-\*ターゲットのテストジョブを実行する
 - DISABLE_WASM32_TEST: true
   - wasm32-*ターゲットのテストジョブをスキップする
 - ENABLE_WINDOWS_MSVC_TEST: true

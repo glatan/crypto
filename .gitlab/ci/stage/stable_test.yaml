@@ -1,9 +1,23 @@
-stable_linux_test:
+stable_tier1_linux_test:
   extends:
-    - .linux_test_rule
+    - .tier1_linux_test_rule
     - .stable_test_base
     - .linux_template
-    - .linux_matrix_template
+    - .tier1_linux_matrix_template
+
+stable_tier2_with_host_tool_linux_test:
+  extends:
+    - .tier2_with_host_tool_linux_test_rule
+    - .stable_test_base
+    - .linux_template
+    - .tier2_with_host_tool_linux_matrix_template
+
+stable_tier2_without_host_tool_linux_test:
+  extends:
+    - .tier2_without_host_tool_linux_test_rule
+    - .stable_test_base
+    - .linux_template
+    - .tier2_without_host_tool_linux_matrix_template
 
 stable_wasm32-wasi_test:
   extends:

@@ -4,23 +4,35 @@
 
 .file_change_rule: &file_change_rule
   - changes:
-    - .gitlab-ci.yml
-    - .gitlab/ci/**/*.yaml
-    - .cargo/config.toml
-    - Cargo.toml
-    - crate/**/*.rs
-    - src/**/*.rs
+      - .gitlab-ci.yml
+      - .gitlab/ci/**/*.yaml
+      - .cargo/config.toml
+      - Cargo.toml
+      - crate/**/*.rs
+      - src/**/*.rs
 
 workflow:
   rules:
     - *disable_merge_request_event
     - *file_change_rule
 
-.linux_test_rule:
+.tier1_linux_test_rule:
   rules:
     - *disable_merge_request_event
-    - if: $DISABLE_LINUX_TEST == "true"
+    - if: $DISABLE_TIER1_LINUX_TEST == "true"
       when: never
+    - *file_change_rule
+
+.tier2_with_host_tool_linux_test_rule:
+  rules:
+    - *disable_merge_request_event
+    - if: $ENABLE_TIER2_WITH_HOST_TOOLS_LINUX_TEST == "true"
+    - *file_change_rule
+
+.tier2_without_host_tool_linux_test_rule:
+  rules:
+    - *disable_merge_request_event
+    - if: $ENABLE_TIER2_WITHOUT_HOST_TOOLS_LINUX_TEST == "true"
     - *file_change_rule
 
 .wasm32_test_rule:

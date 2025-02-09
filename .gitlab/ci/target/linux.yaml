@@ -10,17 +10,19 @@
   script:
     - cargo test --workspace --target ${TARGET}
 
-.linux_matrix_template:
+.tier1_linux_matrix_template:
   parallel:
     matrix:
-      # Tier 1
       - PACKAGES: gcc-aarch64-linux-gnu
         TARGET: aarch64-unknown-linux-gnu
       - PACKAGES: gcc-i686-linux-gnu
         TARGET: i686-unknown-linux-gnu
       - PACKAGES: gcc
         TARGET: x86_64-unknown-linux-gnu
-      # Tier 2
+
+.tier2_with_host_tool_linux_matrix_template:
+  parallel:
+    matrix:
       - PACKAGES: gcc-aarch64-linux-gnu
         TARGET: aarch64-unknown-linux-musl
       - PACKAGES: gcc-arm-linux-gnueabi
@@ -43,7 +45,10 @@
         TARGET: s390x-unknown-linux-gnu
       - PACKAGES: gcc
         TARGET: x86_64-unknown-linux-musl
-      # Tier 2.5
+
+.tier2_without_host_tool_linux_matrix_template:
+  parallel:
+    matrix:
       - PACKAGES: gcc-arm-linux-gnueabi
         TARGET: arm-unknown-linux-musleabi
       - PACKAGES: gcc-arm-linux-gnueabihf

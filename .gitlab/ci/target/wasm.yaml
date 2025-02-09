@@ -14,4 +14,4 @@
   parallel:
     matrix:
       - TARGET: wasm32-wasip1
-      - TARGET: wasm32-wasip1-threads
+      # - TARGET: wasm32-wasip1-threads

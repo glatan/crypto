@@ -5,7 +5,7 @@ WORKDIR /workdir
 ENV CARGO_HOME='/cargo' \
     PATH="${PATH}:/cargo/bin" \
     STABLE_RUST_VERSION='1.85.0' \
-    WASMTIME_VERSION='29.0.1' \
+    WASMTIME_VERSION='30.0.0' \
     TARGETS='\
         aarch64-unknown-linux-gnu \
         aarch64-unknown-linux-musl \

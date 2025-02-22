@@ -8,7 +8,7 @@ stages:
 variables:
   CARGO_HOME: "${CI_PROJECT_DIR}/cargo"
   STABLE_RUST_VERSION: "1.85.0"
-  WASMTIME_VERSION: "29.0.1"
+  WASMTIME_VERSION: "30.0.0"
   MSYS2_VERSION: "2024-12-08"
 
 default:

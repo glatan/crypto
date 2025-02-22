@@ -41,6 +41,10 @@
         TARGET: powerpc64le-unknown-linux-gnu
       - PACKAGES: gcc-riscv64-linux-gnu
         TARGET: riscv64gc-unknown-linux-gnu
+      - PACKAGES: gcc-powerpc64le-linux-gnu
+        TARGET: powerpc64le-unknown-linux-musl
+      - PACKAGES: gcc-riscv64-linux-gnu
+        TARGET: riscv64gc-unknown-linux-musl
       - PACKAGES: gcc-s390x-linux-gnu
         TARGET: s390x-unknown-linux-gnu
       - PACKAGES: gcc
@@ -105,10 +109,6 @@
         TARGET: powerpc-unknown-linux-musl
       - PACKAGES: gcc-powerpc64-linux-gnu
         TARGET: powerpc64-unknown-linux-musl
-      - PACKAGES: gcc-powerpc64le-linux-gnu
-        TARGET: powerpc64le-unknown-linux-musl
-      - PACKAGES: gcc-riscv64-linux-gnu
-        TARGET: riscv64gc-unknown-linux-musl
       - PACKAGES: gcc-s390x-linux-gnu
         TARGET: s390x-unknown-linux-musl
       - PACKAGES: gcc-arm-linux-gnueabihf

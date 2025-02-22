@@ -9,7 +9,7 @@
 
 ### *-pc-windows-msvc
 
-- OS: Windows Server 2022 
+- OS: Windows Server 2022
 - Host CPU Arch: x86_64
 
 https://docs.gitlab.com/ee/ci/runners/hosted_runners/windows.html
@@ -61,7 +61,9 @@ https://docs.gitlab.com/ee/ci/runners/hosted_runners/windows.html
 |powerpc-unknown-linux-gnu|powerpc-linux-gnu-gcc|qemu-ppc -L /usr/powerpc-linux-gnu/||
 |powerpc64-unknown-linux-gnu|powerpc64-linux-gnu-gcc|qemu-ppc64 -L /usr/powerpc64-linux-gnu/||
 |powerpc64le-unknown-linux-gnu|powerpc64le-linux-gnu-gcc|qemu-ppc64le -L /usr/powerpc64le-linux-gnu/||
+|powerpc64le-unknown-linux-musl|powerpc64le-linux-gnu-gcc|qemu-ppc64le -L /usr/powerpc64le-linux-gnu/||
 |riscv64gc-unknown-linux-gnu|riscv64-linux-gnu-gcc|qemu-riscv64 -L /usr/riscv64-linux-gnu/||
+|riscv64gc-unknown-linux-musl|riscv64-linux-gnu-gcc|qemu-riscv64 -L /usr/riscv64-linux-gnu/|rustflags = ["-C", "target-feature=+crt-static"]|
 |s390x-unknown-linux-gnu|s390x-linux-gnu-gcc|qemu-s390x -L /usr/s390x-linux-gnu/||
 |x86_64-unknown-linux-musl||||
 
@@ -69,7 +71,7 @@ https://docs.gitlab.com/ee/ci/runners/hosted_runners/windows.html
 
 |Target|Linker|Runner + Option|Note|
 |-|-|-|-|
-|aarch64-pc-windows-gnullvm||lld||
+|aarch64-pc-windows-gnullvm|lld|||
 |arm-unknown-linux-musleabi|arm-linux-gnueabi-gcc|qemu-arm -L /usr/arm-linux-gnueabi/||
 |arm-unknown-linux-musleabihf|arm-linux-gnueabihf-gcc|qemu-arm -L /usr/arm-linux-gnueabihf/||
 |armv5te-unknown-linux-gnueabi|arm-linux-gnueabi-gcc|qemu-arm -L /usr/arm-linux-gnueabi/||
@@ -85,7 +87,9 @@ https://docs.gitlab.com/ee/ci/runners/hosted_runners/windows.html
 |thumbv7neon-unknown-linux-gnueabihf|arm-linux-gnueabihf-gcc|qemu-arm -L /usr/arm-linux-gnueabihf/||
 |wasm32-wasi||wasmtime||
 |wasm32-wasip1||wasmtime||
-|x86_64-pc-windows-gnullvm||lld||
+|wasm32-wasip2||wasmtime||
+|wasm32-wasip1-threads||wasmtime|実行時エラーになる|
+|x86_64-pc-windows-gnullvm|lld|||
 
 ### Tier 3
 
@@ -106,7 +110,5 @@ https://docs.gitlab.com/ee/ci/runners/hosted_runners/windows.html
 |mipsisa64r6el-unknown-linux-gnuabi64|mipsisa64r6el-linux-gnuabi64-gcc|qemu-mips64el -L /usr/mipsisa64r6el-linux-gnuabi64/||
 |powerpc-unknown-linux-musl|powerpc-linux-gnu-gcc|qemu-ppc -L /usr/powerpc-linux-gnu/||
 |powerpc64-unknown-linux-musl|powerpc64-linux-gnu-gcc|qemu-ppc64 -L /usr/powerpc64-linux-gnu/||
-|powerpc64le-unknown-linux-musl|powerpc64le-linux-gnu-gcc|qemu-ppc64le -L /usr/powerpc64le-linux-gnu/||
-|riscv64gc-unknown-linux-musl|riscv64-linux-gnu-gcc|qemu-riscv64 -L /usr/riscv64-linux-gnu/||
 |s390x-unknown-linux-musl|s390x-linux-gnu-gcc|qemu-s390x -L /usr/s390x-linux-gnu/||
 |thumbv7neon-unknown-linux-musleabihf|arm-linux-gnueabihf-gcc|qemu-arm -L /usr/arm-linux-gnueabihf/||

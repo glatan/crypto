@@ -1,11 +1,11 @@
-FROM docker.io/library/rust:1.83.0-slim-bookworm
+FROM docker.io/library/rust:1.85.0-slim-bookworm
 
 WORKDIR /workdir
 
 ENV CARGO_HOME='/cargo' \
     PATH="${PATH}:/cargo/bin" \
-    STABLE_RUST_VERSION='1.83.0' \
-    WASMTIME_VERSION='23.0.1' \
+    STABLE_RUST_VERSION='1.85.0' \
+    WASMTIME_VERSION='29.0.1' \
     TARGETS='\
         aarch64-unknown-linux-gnu \
         aarch64-unknown-linux-musl \
@@ -26,13 +26,16 @@ ENV CARGO_HOME='/cargo' \
         powerpc-unknown-linux-gnu \
         powerpc64-unknown-linux-gnu \
         powerpc64le-unknown-linux-gnu \
+        powerpc64le-unknown-linux-musl \
         riscv64gc-unknown-linux-gnu \
+        riscv64gc-unknown-linux-musl \
         s390x-unknown-linux-gnu \
         sparc64-unknown-linux-gnu \
         thumbv7neon-unknown-linux-gnueabihf \
         x86_64-unknown-linux-gnu \
         x86_64-unknown-linux-musl \
         wasm32-wasip1 \
+        wasm32-wasip2 \
         wasm32-wasip1-threads'
 
 RUN \
@@ -54,6 +57,7 @@ RUN \
         gcc-riscv64-linux-gnu \
         gcc-s390x-linux-gnu \
         gcc-sparc64-linux-gnu \
+        gcc-x86-64-linux-gnux32 \
         # Tier 3
         gcc-mips-linux-gnu \
         gcc-mips64-linux-gnuabi64 \
@@ -62,7 +66,7 @@ RUN \
         gcc-mipsel-linux-gnu \
         gcc-mips64el-linux-gnuabi64 \
         gcc-mipsisa32r6el-linux-gnu \
-        gcc-mipsisa64r6el-linux-gnuabi64 
+        gcc-mipsisa64r6el-linux-gnuabi64
 
 RUN \
     curl -L "https://github.com/bytecodealliance/wasmtime/releases/download/v${WASMTIME_VERSION}/wasmtime-v${WASMTIME_VERSION}-x86_64-linux.tar.xz" > wasmtime-v${WASMTIME_VERSION}-x86_64-linux.tar.xz && \

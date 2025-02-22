@@ -2,7 +2,7 @@ use alloc::vec::Vec;
 
 use cryptographic_hash_function::CryptographicHashFunction;
 
-use super::{Sha2, H224};
+use super::{H224, Sha2};
 
 pub struct Sha224(Sha2<u32>);
 

@@ -6,7 +6,7 @@ use merkle_damgard::impl_md_flow;
 
 use crate::{
     consts::{
-        {f1, f2, f3, f4, f5}, {H320, K160_LEFT, K160_RIGHT, R_LEFT, R_RIGHT, S_LEFT, S_RIGHT},
+        {H320, K160_LEFT, K160_RIGHT, R_LEFT, R_RIGHT, S_LEFT, S_RIGHT}, {f1, f2, f3, f4, f5},
     },
     {round_left_160, round_right_160},
 };

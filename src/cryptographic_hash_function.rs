@@ -1,12 +1,12 @@
 #[cfg(feature = "blake")]
-pub use blake::{Blake224, Blake256, Blake28, Blake32, Blake384, Blake48, Blake512, Blake64};
+pub use blake::{Blake28, Blake32, Blake48, Blake64, Blake224, Blake256, Blake384, Blake512};
 #[cfg(feature = "blake2")]
 pub use blake2::{Blake2b, Blake2s};
 #[cfg(feature = "edonr")]
 pub use edonr::{EdonR224, EdonR256, EdonR384, EdonR512};
 #[cfg(feature = "blake")]
 pub use keccak::{
-    Keccak224, Keccak256, Keccak384, Keccak512, KeccakF1600, KeccakF200, KeccakF400, KeccakF800,
+    Keccak224, Keccak256, Keccak384, Keccak512, KeccakF200, KeccakF400, KeccakF800, KeccakF1600,
 };
 #[cfg(feature = "md2")]
 pub use md2::Md2;

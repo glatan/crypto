@@ -15,7 +15,7 @@ pub use md4::Md4;
 #[cfg(feature = "md5")]
 pub use md5::Md5;
 #[cfg(feature = "ripemd")]
-pub use ripemd::{Ripemd128, Ripemd160, Ripemd256, Ripemd320};
+pub use ripemd::{Ripemd, Ripemd128, Ripemd160, Ripemd256, Ripemd320};
 #[cfg(feature = "sha0")]
 pub use sha0::Sha0;
 #[cfg(feature = "sha1")]

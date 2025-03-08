@@ -1,0 +1,4 @@
+include:
+  - local: .gitlab/ci/target/linux.yaml
+  - local: .gitlab/ci/target/wasm.yaml
+  - local: .gitlab/ci/target/windows.yaml

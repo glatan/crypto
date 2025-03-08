@@ -2,7 +2,7 @@
 extern crate clap;
 
 use clap::{App, ArgMatches};
-use ghash::*;
+use crypto::cryptographic_hash_function::*;
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
@@ -33,17 +33,17 @@ impl MessageFile {
         match app.value_of("file") {
             Some(path) => match File::open(path) {
                 Ok(file) => {
-                    match path.split("/").last() {
+                    match path.split('/').last() {
                         Some(name) => filename = name.to_owned(),
                         None => panic!("Failed to get file name.: {}", path),
                     }
                     let mut buf_reader = BufReader::new(file);
                     match buf_reader.read_to_string(&mut message) {
                         Ok(_) => (),
-                        Err(e) => panic!(e),
+                        Err(e) => panic!("{}", e),
                     }
                 }
-                Err(e) => panic!(e),
+                Err(e) => panic!("{}", e),
             },
             None => panic!("Missing file"),
         }

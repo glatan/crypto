@@ -1,0 +1,48 @@
+stable_tier1_linux_test:
+  extends:
+    - .tier1_linux_test_rule
+    - .stable_test_base
+    - .linux_template
+    - .tier1_linux_matrix_template
+
+stable_tier2_with_host_tool_linux_test:
+  extends:
+    - .tier2_with_host_tool_linux_test_rule
+    - .stable_test_base
+    - .linux_template
+    - .tier2_with_host_tool_linux_matrix_template
+
+stable_tier2_without_host_tool_linux_test:
+  extends:
+    - .tier2_without_host_tool_linux_test_rule
+    - .stable_test_base
+    - .linux_template
+    - .tier2_without_host_tool_linux_matrix_template
+
+stable_wasm32-wasi_test:
+  extends:
+    - .wasm32_test_rule
+    - .stable_test_base
+    - .wasm32-wasi_template
+    - .wasm32-wasi_matrix_template
+
+stable_windows-msvc_test:
+  extends:
+    - .windows-msvc_rule
+    - .stable_test_base
+    - .windows-msvc_template
+    - .windows-msvc_matrix_template
+
+stable_windows-gnu_test:
+  extends:
+    - .windows-gnu_rule
+    - .stable_test_base
+    - .windows-msys2_template
+    - .windows-gnu_matrix_template
+
+stable_windows-gnullvm_test:
+  extends:
+    - .windows-gnullvm_rule
+    - .stable_test_base
+    - .windows-msys2_template
+    - .windows-gnullvm_matrix_template

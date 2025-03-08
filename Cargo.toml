@@ -1,15 +1,29 @@
 [package]
-name = "ghash"
+name = "crypto"
 version = "0.0.1"
-authors = ["glatan <glatan.edu@gmail.com>"]
-edition = "2018"
-license = "Apache-2.0 OR MIT"
 readme = "README.md"
-repository = "https://gitlab.com/glatan/ghash/"
-homepage = "https://gitlab.com/glatan/ghash/"
+edition = "2024"
+
+[workspace.package]
+authors = ["glatan <gitlab.com.crying257@passinbox.com>"]
+edition = "2024"
+rust-version = "1.85.0"
+license = "GPL-3.0-only"
+homepage = "https://gitlab.com/glatan/crypto/"
+repository = "https://gitlab.com/glatan/crypto/"
+
+[workspace.lints.clippy]
+missing_const_for_fn = "deny"
 
 [features]
 default = [
+    "blake2",
+    "sha2",
+    "sha3",
+    "cryptographic_hash_function",
+]
+
+all=[
     "blake",
     "blake2",
     "edonr",
@@ -21,53 +35,44 @@ default = [
     "sha0",
     "sha1",
     "sha2",
-    "sha3"
-]
-minimal = [
-    "blake/minimal",
-    "blake2/minimal",
-    "edonr/minimal",
-    "keccak",
-    "md2/minimal",
-    "md4/minimal",
-    "md5/minimal",
-    "ripemd/minimal",
-    "sha0/minimal",
-    "sha1/minimal",
-    "sha2/minimal",
-    "sha3"
+    "sha3",
+    "cryptographic_hash_function",
 ]
 
 [dependencies]
-blake = { path = "components/hashes/blake", optional = true }
-blake2 = { path = "components/hashes/blake2", optional = true }
-edonr = { path = "components/hashes/edonr", optional = true }
-keccak = { path = "components/hashes/keccak", optional = true }
-md2 = { path = "components/hashes/md2", optional = true }
-md4 = { path = "components/hashes/md4", optional = true }
-md5 = { path = "components/hashes/md5", optional = true }
-ripemd = { path = "components/hashes/ripemd", optional = true }
-sha0 = { path = "components/hashes/sha0", optional = true }
-sha1 = { path = "components/hashes/sha1", optional = true }
-sha2 = { path = "components/hashes/sha2", optional = true }
-sha3 = { path = "components/hashes/sha3", optional = true }
-utils = { path = "components/utils" }
+blake = { path = "crate/cryptographic_hash_function/blake", optional = true }
+blake2 = { path = "crate/cryptographic_hash_function/blake2", optional = true }
+edonr = { path = "crate/cryptographic_hash_function/edonr", optional = true }
+keccak = { path = "crate/cryptographic_hash_function/keccak", optional = true }
+md2 = { path = "crate/cryptographic_hash_function/md2", optional = true }
+md4 = { path = "crate/cryptographic_hash_function/md4", optional = true }
+md5 = { path = "crate/cryptographic_hash_function/md5", optional = true }
+ripemd = { path = "crate/cryptographic_hash_function/ripemd", optional = true }
+sha0 = { path = "crate/cryptographic_hash_function/sha0", optional = true }
+sha1 = { path = "crate/cryptographic_hash_function/sha1", optional = true }
+sha2 = { path = "crate/cryptographic_hash_function/sha2", optional = true }
+sha3 = { path = "crate/cryptographic_hash_function/sha3", optional = true }
+cryptographic_hash_function = { path = "crate/cryptographic_hash_function/cryptographic_hash_function", optional = true }
 
 [workspace]
 members = [
-    "components/hashes/blake",
-    "components/hashes/blake2",
-    "components/hashes/edonr",
-    "components/hashes/groestl",
-    "components/hashes/keccak",
-    "components/hashes/md2",
-    "components/hashes/md4",
-    "components/hashes/md5",
-    "components/hashes/ripemd",
-    "components/hashes/sha0",
-    "components/hashes/sha1",
-    "components/hashes/sha2",
-    "components/hashes/sha3",
-    "components/dev-utils",
-    "components/utils",
+    # Cryptographic Hash Function
+    "crate/cryptographic_hash_function/blake",
+    "crate/cryptographic_hash_function/blake2",
+    "crate/cryptographic_hash_function/edonr",
+    "crate/cryptographic_hash_function/keccak",
+    "crate/cryptographic_hash_function/groestl",
+    "crate/cryptographic_hash_function/md2",
+    "crate/cryptographic_hash_function/md4",
+    "crate/cryptographic_hash_function/md5",
+    "crate/cryptographic_hash_function/ripemd",
+    "crate/cryptographic_hash_function/sha0",
+    "crate/cryptographic_hash_function/sha1",
+    "crate/cryptographic_hash_function/sha2",
+    "crate/cryptographic_hash_function/sha3",
+    "crate/cryptographic_hash_function/dev-util",
+    "crate/cryptographic_hash_function/merkle_damgard"
+]
+exclude = [
+    "examples",
 ]

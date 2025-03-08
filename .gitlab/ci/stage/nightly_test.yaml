@@ -1,0 +1,34 @@
+nightly_linux_test:
+  extends:
+    - .linux_test_rule
+    - .nightly_test_base
+    - .linux_template
+    - .linux_matrix_template
+
+nightly_wasm32-wasi_test:
+  extends:
+    - .wasm32_test_rule
+    - .nightly_test_base
+    - .wasm32-wasi_template
+    - .wasm32-wasi_matrix_template
+
+nightly_windows-msvc_test:
+  extends:
+    - .windows-msvc_rule
+    - .nightly_test_base
+    - .windows-msvc_template
+    - .windows-msvc_matrix_template
+
+nightly_windows-gnu_test:
+  extends:
+    - .windows-gnu_rule
+    - .nightly_test_base
+    - .windows-msys2_template
+    - .windows-gnu_matrix_template
+
+nightly_windows-gnullvm_test:
+  extends:
+    - .windows-gnullvm_rule
+    - .nightly_test_base
+    - .windows-msys2_template
+    - .windows-gnullvm_matrix_template

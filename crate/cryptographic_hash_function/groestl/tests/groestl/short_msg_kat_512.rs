@@ -1,6 +1,6 @@
 use dev_util::impl_short_msg_kat;
 
-impl_short_msg_kat!(groestl, Groestl512, SHORT_MSG_KAT, Groestl512::default());
+impl_short_msg_kat!(groestl, Groestl512, SHORT_MSG_KAT, Groestl512);
 
 const SHORT_MSG_KAT: [(&str, &str); 255] = [
     (

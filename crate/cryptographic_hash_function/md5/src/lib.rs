@@ -94,7 +94,7 @@ impl Md5 {
     }
     #[inline(always)]
     #[allow(clippy::many_single_char_names)]
-    fn compress(&mut self, x: &[u32; 16]) {
+    const fn compress(&mut self, x: &[u32; 16]) {
         let [mut a, mut b, mut c, mut d] = self.status;
 
         a = round1(a, b, c, d, x[0], 7, T[0]);

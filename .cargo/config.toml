@@ -124,7 +124,7 @@ runner = 'wasmtime'
 runner = 'wasmtime'
 
 [target.wasm32-wasip1-threads]
-runner = 'wasmtime'
+runner = 'wasmtime --wasi threads'
 
 [target.x86_64-pc-windows-gnullvm]
 linker = 'lld'

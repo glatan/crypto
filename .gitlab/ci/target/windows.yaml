@@ -10,10 +10,9 @@
   parallel:
     matrix:
       # Tier 1
-      - TARGET: i686-pc-windows-msvc
       - TARGET: x86_64-pc-windows-msvc
       # Tier 2
-      - TARGET: i586-pc-windows-msvc
+      - TARGET: i686-pc-windows-msvc
 
 # gnullvmのビルドがエラーになる
 # https://github.com/msys2/MINGW-packages/pull/20989 待ち

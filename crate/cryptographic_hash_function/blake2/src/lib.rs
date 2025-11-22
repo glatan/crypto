@@ -74,7 +74,16 @@ impl Blake2<u32> {
     }
     #[inline(always)]
     #[allow(clippy::too_many_arguments, clippy::many_single_char_names)]
-    fn g(&mut self, block: &[u32; 16], i: usize, r: usize, a: usize, b: usize, c: usize, d: usize) {
+    const fn g(
+        &mut self,
+        block: &[u32; 16],
+        i: usize,
+        r: usize,
+        a: usize,
+        b: usize,
+        c: usize,
+        d: usize,
+    ) {
         self.v[a] = self.v[a]
             .wrapping_add(self.v[b])
             .wrapping_add(block[SIGMA[r][2 * i]]);
@@ -192,7 +201,16 @@ impl Blake2<u64> {
     }
     #[inline(always)]
     #[allow(clippy::too_many_arguments, clippy::many_single_char_names)]
-    fn g(&mut self, block: &[u64; 16], i: usize, r: usize, a: usize, b: usize, c: usize, d: usize) {
+    const fn g(
+        &mut self,
+        block: &[u64; 16],
+        i: usize,
+        r: usize,
+        a: usize,
+        b: usize,
+        c: usize,
+        d: usize,
+    ) {
         // a,b,c,d: index of self.v
         // i: number of function G
         // r: round count

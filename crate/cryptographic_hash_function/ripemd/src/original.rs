@@ -62,7 +62,7 @@ impl Ripemd {
         }
     }
     #[inline(always)]
-    fn compress(&mut self, x: &[u32; 16]) {
+    const fn compress(&mut self, x: &[u32; 16]) {
         let [mut aa, mut bb, mut cc, mut dd] = self.status;
         let [mut aaa, mut bbb, mut ccc, mut ddd] = self.status;
 

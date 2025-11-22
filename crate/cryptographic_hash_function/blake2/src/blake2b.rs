@@ -64,7 +64,7 @@ impl CryptographicHashFunction for Blake2b {
             self.0
                 .compress(&[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
         }
-        if (l % 128) != 0 {
+        if !l.is_multiple_of(128) {
             let offset = (l / 128) * 128;
             let remainder = l % 128;
             let mut bytes = [0u8; 128];

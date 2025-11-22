@@ -32,3 +32,16 @@ nightly_windows-gnullvm_test:
     - .nightly_test_base
     - .windows-msys2_template
     - .windows-gnullvm_matrix_template
+
+.pc-cygwin_test:
+  extends:
+    - .pc-cygwin_rule
+  stage: tier3_test
+  allow_failure: true
+  tags:
+    - saas-windows-medium-amd64
+  before_script:
+    - .gitlab\script\setup_msys2.ps1 -Env msys
+    - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Sy rust"
+  script:
+    - C:\msys64\usr\bin\bash -lc "cargo test --workspace"

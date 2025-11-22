@@ -1,3 +1,57 @@
+spec:
+  inputs:
+    # Controll Stages
+    ENABLE_STABLE_TEST:
+      type: boolean
+      default: true
+      description: Stable Rustでのtestを有効化する
+    ENABLE_NIGHTLY_TEST:
+      type: boolean
+      default: false
+      description: Nightly Rustでのtestを有効化する
+    ENABLE_TIER3_BUILD:
+      type: boolean
+      default: false
+      description: Tier 3ターゲットでのビルドを有効化する
+    ENABLE_TIER3_TEST:
+      type: boolean
+      default: false
+      description: Tier 3ターゲットでのtestを有効化する
+    # Controll Targets
+    ENABLE_TIER1_LINUX_TEST:
+      type: boolean
+      default: true
+      description: Tier 1の*-linux-*ターゲットでのtestを有効化する
+    ENABLE_TIER2_WITH_HOST_TOOLS_LINUX_TEST:
+      type: boolean
+      default: false
+      description: Tier 2 With Host Toolsの*-linux-*ターゲットでのtestを有効化する
+    ENABLE_TIER2_WITHOUT_HOST_TOOLS_LINUX_TEST:
+      type: boolean
+      default: false
+      description: Tier 2 Without Host Toolsの*-linux-*ターゲットでのtestを有効化する
+    ENABLE_WASM32_TEST:
+      type: boolean
+      default: true
+      description: wasm32-*ターゲットでのtestを有効化する
+    ENABLE_WINDOWS_MSVC_TEST:
+      type: boolean
+      default: false
+      description: \*-pc-windows-msvcターゲットのテストジョブを実行する
+    ENABLE_WINDOWS_GNU_TEST:
+      type: boolean
+      default: false
+      description: \*-pc-windows-gnuターゲットのテストジョブを実行する
+    ENABLE_WINDOWS_GNULLVM_TEST:
+      type: boolean
+      default: false
+      description: \*-pc-windows-gnullvmターゲットのテストジョブを実行する
+    ENABLE_PC_CYGWIN_TEST:
+      type: boolean
+      default: false
+      description: x86_64-pc-cygwinターゲットのテストジョブを実行する
+---
+
 stages:
   - .pre
   - stable_test

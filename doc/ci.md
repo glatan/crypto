@@ -9,34 +9,6 @@ GitLab Runnerの設定について
 - stable-\*-linux-\*
 - stable-wasm32-*
 
-### ステージ制御
-
-- DISABLE_STABLE_TEST: true
-  - stable_testステージをスキップする
-- ENABLE_NIGHTLY_TEST: true
-  - nightly_testステージを実行する
-- ENABLE_TIER3_BUILD: true
-  - tier3_buildステージを実行する
-- ENABLE_TIER3_TEST: true
-  - tier3_testステージを実行する
-
-### ターゲット制御
-
-- DISABLE_TIER1_LINUX_TEST: true
-  - [Tier 1](https://doc.rust-lang.org/stable/rustc/platform-support.html#tier-1)の\*-linux-\*ターゲットのテストジョブをスキップする
-- ENABLE_TIER2_WITH_HOST_TOOLS_LINUX_TEST
-  - [Tier 2 with Host Tools](https://doc.rust-lang.org/stable/rustc/platform-support.html#tier-2-with-host-tools)の\*-linux-\*ターゲットのテストジョブを実行する
-- ENABLE_TIER2_WITHOUT_HOST_TOOLS_LINUX_TEST
-  - [Tier 2 without Host Tools](https://doc.rust-lang.org/stable/rustc/platform-support.html#tier-2-without-host-tools)の\*-linux-\*ターゲットのテストジョブを実行する
-- DISABLE_WASM32_TEST: true
-  - wasm32-*ターゲットのテストジョブをスキップする
-- ENABLE_WINDOWS_MSVC_TEST: true
-  - *-pc-windows-msvcターゲットのテストジョブを実行する
-- ENABLE_WINDOWS_GNU_TEST: true
-  - *-pc-windows-gnuターゲットのテストジョブを実行する
-- ENABLE_WINDOWS_GNULLVM_TEST: true
-  - *-pc-windows-gnullvmターゲットのテストジョブを実行する
-
 ## 実行環境
 
 ### Runner

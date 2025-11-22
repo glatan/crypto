@@ -15,13 +15,13 @@ include:
   - local: .gitlab/ci/stage/pre.yaml
   - local: .gitlab/ci/stage/stable_test.yaml
     rules:
-      - if: $DISABLE_STABLE_TEST != "true"
+      - if: $[[ inputs.ENABLE_STABLE_TEST ]]
   - local: .gitlab/ci/stage/nightly_test.yaml
     rules:
-      - if: $ENABLE_NIGHTLY_TEST == "true"
+      - if: $[[ inputs.ENABLE_NIGHTLY_TEST ]]
   - local: .gitlab/ci/stage/tier3_build.yaml
     rules:
-      - if: $ENABLE_TIER3_BUILD == "true"
+      - if: $[[ inputs.ENABLE_TIER3_BUILD ]]
   - local: .gitlab/ci/stage/tier3_test.yaml
     rules:
-      - if: $ENABLE_TIER3_TEST == "true"
+      - if: $[[ inputs.ENABLE_TIER3_TEST ]]

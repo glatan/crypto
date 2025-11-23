@@ -15,7 +15,7 @@ tier3_linux_build:
   extends:
     - .tier3_linux_matrix_template
 
-.pc-cygwin_build:
+pc-cygwin_build:
   extends:
     - .pc-cygwin_rule
   stage: tier3_build

@@ -15,7 +15,7 @@ tier3_linux_test:
   extends:
     - .tier3_linux_matrix_template
 
-.pc-cygwin_test:
+pc-cygwin_test:
   extends:
     - .pc-cygwin_rule
   stage: tier3_test

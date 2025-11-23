@@ -1,6 +1,6 @@
 prepare_test:
   stage: .pre
-  image: ${STABLE_LINUX_BASE_IMAGE}
+  image: $STABLE_LINUX_BASE_IMAGE
   before_script:
     - rustup component add clippy rustfmt
   script:

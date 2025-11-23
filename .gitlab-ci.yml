@@ -69,9 +69,9 @@ variables:
 
 default:
   cache:
-    key: ${CI_JOB_STAGE}-${TARGET}
+    key: $CI_JOB_STAGE-$TARGET
     paths:
-      - target/${TARGET}
+      - target/$TARGET
 
 include:
   - local: .gitlab/ci/target.yaml

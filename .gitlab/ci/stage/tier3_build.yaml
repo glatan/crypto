@@ -1,6 +1,6 @@
 tier3_linux_build:
   stage: tier3_build
-  image: ${NIGHTLY_LINUX_BASE_IMAGE}
+  image: $NIGHTLY_LINUX_BASE_IMAGE
   allow_failure: true
   before_script:
     - set -ex

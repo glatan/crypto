@@ -1,5 +1,5 @@
 .disable_merge_request_event: &disable_merge_request_event
-  - if: ${CI_PIPELINE_SOURCE} == "merge_request_event"
+  - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     when: never
 
 .file_change_rule: &file_change_rule
@@ -19,7 +19,7 @@ workflow:
 .tier1_linux_test_rule:
   rules:
     # - if: $[[ inputs.ENABLE_TIER1_LINUX_TEST ]]
-    - if: ${DISABLE_TIER1_LINUX_TEST} == "true"
+    - if: $DISABLE_TIER1_LINUX_TEST == "true"
       when: never
     - *disable_merge_request_event
     - *file_change_rule
@@ -27,7 +27,7 @@ workflow:
 .tier2_with_host_tool_linux_test_rule:
   rules:
     # - if: $[[ inputs.ENABLE_TIER2_WITH_HOST_TOOLS_LINUX_TEST ]]
-    - if: ${ENABLE_TIER2_WITH_HOST_TOOLS_LINUX_TEST} != "true"
+    - if: $ENABLE_TIER2_WITH_HOST_TOOLS_LINUX_TEST != "true"
       when: never
     - *disable_merge_request_event
     - *file_change_rule
@@ -35,7 +35,7 @@ workflow:
 .tier2_without_host_tool_linux_test_rule:
   rules:
     # - if: $[[ inputs.ENABLE_TIER2_WITHOUT_HOST_TOOLS_LINUX_TEST ]]
-    - if: ${ENABLE_TIER2_WITHOUT_HOST_TOOLS_LINUX_TEST} != "true"
+    - if: $ENABLE_TIER2_WITHOUT_HOST_TOOLS_LINUX_TEST != "true"
       when: never
     - *disable_merge_request_event
     - *file_change_rule
@@ -43,7 +43,7 @@ workflow:
 .tier3_linux_test_rule:
   rules:
     # - if: $[[ inputs.ENABLE_TIER3_LINUX_TEST ]]
-    - if: ${ENABLE_TIER3_LINUX_TEST} != "true"
+    - if: $ENABLE_TIER3_LINUX_TEST != "true"
       when: never
     - *disable_merge_request_event
     - *file_change_rule
@@ -51,7 +51,7 @@ workflow:
 .wasm32_test_rule:
   rules:
     # - if: $[[ inputs.ENABLE_WASM32_TEST ]]
-    - if: ${DISABLE_WASM32_TEST} != "true"
+    - if: $DISABLE_WASM32_TEST != "true"
       when: never
     - *disable_merge_request_event
     - *file_change_rule
@@ -59,27 +59,27 @@ workflow:
 .windows-msvc_rule:
   rules:
     # - if: $[[ inputs.ENABLE_WINDOWS_MSVC_TEST ]]
-    - if: ${ENABLE_WINDOWS_MSVC_TEST} == "true"
+    - if: $ENABLE_WINDOWS_MSVC_TEST == "true"
       when: never
     - *disable_merge_request_event
 
 .windows-gnu_rule:
   rules:
     # - if: $[[ inputs.ENABLE_WINDOWS_GNU_TEST ]]
-    - if: ${ENABLE_WINDOWS_GNU_TEST} == "true"
+    - if: $ENABLE_WINDOWS_GNU_TEST == "true"
       when: never
     - *disable_merge_request_event
 
 .windows-gnullvm_rule:
   rules:
     # - if: $[[ inputs.ENABLE_WINDOWS_GNULLVM_TEST ]]
-    - if: ${ENABLE_WINDOWS_GNULLVM_TEST} == "true"
+    - if: $ENABLE_WINDOWS_GNULLVM_TEST == "true"
       when: never
     - *disable_merge_request_event
 
 .pc-cygwin_rule:
   rules:
     # - if: $[[ inputs.ENABLE_PC_CYGWIN_TEST ]]
-    - if: ${ENABLE_PC_CYGWIN_TEST} == "true"
+    - if: $ENABLE_PC_CYGWIN_TEST == "true"
       when: never
     - *disable_merge_request_event

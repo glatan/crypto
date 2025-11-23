@@ -3,7 +3,7 @@
   allow_failure: true
 
 .nightly_test_linux_host_base:
-  image: "${NIGHTLY_LINUX_BASE_IMAGE}"
+  image: ${NIGHTLY_LINUX_BASE_IMAGE}
   extends:
     - .nightly_test_base
 

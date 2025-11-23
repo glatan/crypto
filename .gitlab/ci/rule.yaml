@@ -18,52 +18,52 @@ workflow:
 
 .tier1_linux_test_rule:
   rules:
-    - if: $[[ inputs.ENABLE_TIER1_LINUX_TEST ]]
-      when: never
+    # - if: $[[ inputs.ENABLE_TIER1_LINUX_TEST ]]
+    #   when: never
     - *disable_merge_request_event
     - *file_change_rule
 
 .tier2_with_host_tool_linux_test_rule:
   rules:
-    - if: $[[ inputs.ENABLE_TIER2_WITH_HOST_TOOLS_LINUX_TEST ]]
-      when: never
+    # - if: $[[ inputs.ENABLE_TIER2_WITH_HOST_TOOLS_LINUX_TEST ]]
+    #   when: never
     - *disable_merge_request_event
     - *file_change_rule
 
 .tier2_without_host_tool_linux_test_rule:
   rules:
-    - if: $[[ inputs.ENABLE_TIER2_WITHOUT_HOST_TOOLS_LINUX_TEST ]]
-      when: never
+    # - if: $[[ inputs.ENABLE_TIER2_WITHOUT_HOST_TOOLS_LINUX_TEST ]]
+    #   when: never
     - *disable_merge_request_event
     - *file_change_rule
 
 .wasm32_test_rule:
   rules:
-    - if: $[[ inputs.ENABLE_WASM32_TEST ]]
-      when: never
+    # - if: $[[ inputs.ENABLE_WASM32_TEST ]]
+    #   when: never
     - *disable_merge_request_event
     - *file_change_rule
 
 .windows-msvc_rule:
   rules:
-    - if: $[[ inputs.ENABLE_WINDOWS_MSVC_TEST ]]
-      when: never
+    # - if: $[[ inputs.ENABLE_WINDOWS_MSVC_TEST ]]
+    #   when: never
     - *disable_merge_request_event
 
 .windows-gnu_rule:
   rules:
-    - if: $[[ inputs.ENABLE_WINDOWS_GNU_TEST ]]
-      when: never
+    # - if: $[[ inputs.ENABLE_WINDOWS_GNU_TEST ]]
+    #   when: never
     - *disable_merge_request_event
 
 .windows-gnullvm_rule:
   rules:
-    - if: $[[ inputs.ENABLE_WINDOWS_GNULLVM_TEST ]]
-      when: never
+    # - if: $[[ inputs.ENABLE_WINDOWS_GNULLVM_TEST ]]
+    #   when: never
     - *disable_merge_request_event
 
 .pc-cygwin_rule:
   rules:
-    - if: $[[ inputs.ENABLE_PC_CYGWIN_TEST ]]
-      when: never
+    # - if: $[[ inputs.ENABLE_PC_CYGWIN_TEST ]]
+    #   when: never
     - *disable_merge_request_event

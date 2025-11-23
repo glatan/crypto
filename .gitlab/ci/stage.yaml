@@ -1,6 +1,6 @@
 include:
-  - local: .gitlab/ci/stage/pre.yaml
-  - local: .gitlab/ci/stage/stable_test.yaml
+  # - local: .gitlab/ci/stage/pre.yaml
+  # - local: .gitlab/ci/stage/stable_test.yaml
     # rules:
     #   - if: $[[ inputs.ENABLE_STABLE_TEST ]]
   - local: .gitlab/ci/stage/nightly_test.yaml

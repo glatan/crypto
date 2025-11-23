@@ -1,9 +1,8 @@
 .stable_test_base:
   stage: stable_test
-  image: "${STABLE_LINUX_BASE_IMAGE}"
 
 .stable_test_linux_host_base:
-  image: "${NIGHTLY_LINUX_BASE_IMAGE}"
+  image: "${STABLE_LINUX_BASE_IMAGE}"
   extends:
     - .stable_test_base
 

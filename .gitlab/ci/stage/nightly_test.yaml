@@ -56,8 +56,6 @@ nightly_windows-gnu_test:
     - .windows-gnu_matrix_template
 
 nightly_windows-gnullvm_test:
-  stage: nightly_test
-  allow_failure: true
   extends:
     - .windows-gnullvm_rule
     - .nightly_test_windows_host_base

@@ -37,6 +37,13 @@ workflow:
     - *disable_merge_request_event
     - *file_change_rule
 
+.tier3_linux_test_rule:
+  rules:
+    # - if: $[[ inputs.ENABLE_TIER3_LINUX_TEST ]]
+    #   when: never
+    - *disable_merge_request_event
+    - *file_change_rule
+
 .wasm32_test_rule:
   rules:
     # - if: $[[ inputs.ENABLE_WASM32_TEST ]]

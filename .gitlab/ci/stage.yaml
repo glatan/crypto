@@ -1,16 +1,3 @@
-.stable_test_base:
-  stage: stable_test
-  image: docker.io/library/rust:${STABLE_RUST_VERSION}-slim-bookworm
-  variables:
-    CHANNEL: ${STABLE_RUST_VERSION}
-
-.nightly_test_base:
-  stage: nightly_test
-  image: docker.io/rustlang/rust:nightly-bookworm-slim
-  variables:
-    CHANNEL: nightly
-  allow_failure: true
-
 include:
   - local: .gitlab/ci/stage/pre.yaml
   - local: .gitlab/ci/stage/stable_test.yaml

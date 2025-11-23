@@ -64,6 +64,8 @@ variables:
   STABLE_RUST_VERSION: "1.91.1"
   WASMTIME_VERSION: "39.0.0"
   MSYS2_VERSION: "2025-08-30"
+  STABLE_LINUX_BASE_IMAGE: "docker.io/library/rust:${STABLE_RUST_VERSION}-slim-bookworm"
+  NIGHTLY_LINUX_BASE_IMAGE: "docker.io/rustlang/rust:nightly-bookworm-slim"
 
 default:
   cache:

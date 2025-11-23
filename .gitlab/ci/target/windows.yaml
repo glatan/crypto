@@ -1,6 +1,4 @@
-.windows-msvc_template:
-  tags:
-    - saas-windows-medium-amd64
+.windows-msvc_script_template:
   before_script:
     - .gitlab\script\setup_rustup_windows.ps1
   script:
@@ -16,9 +14,7 @@
 
 # gnullvmのビルドがエラーになる
 # https://github.com/msys2/MINGW-packages/pull/20989 待ち
-.windows-msys2_template:
-  tags:
-    - saas-windows-medium-amd64
+.windows-msys2_script_template:
   before_script:
     - .gitlab\script\setup_msys2.ps1 -Env $MSYS_ENV
     - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Sy mingw-w64-rustup"

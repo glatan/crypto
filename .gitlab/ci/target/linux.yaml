@@ -1,4 +1,4 @@
-.linux_template:
+.linux_script_template:
   before_script:
     - set -ex
     - rustup target add ${TARGET}

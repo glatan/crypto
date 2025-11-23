@@ -1,5 +1,6 @@
 tier3_linux_test:
   stage: tier3_test
+  image: "${NIGHTLY_LINUX_BASE_IMAGE}"
   allow_failure: true
   before_script:
     - set -ex
@@ -13,3 +14,16 @@ tier3_linux_test:
     - cargo test --workspace -Z build-std -vv --target ${TARGET}
   extends:
     - .tier3_linux_matrix_template
+
+.pc-cygwin_test:
+  extends:
+    - .pc-cygwin_rule
+  stage: tier3_test
+  allow_failure: true
+  tags:
+    - saas-windows-medium-amd64
+  before_script:
+    - .gitlab\script\setup_msys2.ps1 -Env msys
+    - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Sy rust"
+  script:
+    - C:\msys64\usr\bin\bash -lc "cargo test --workspace"

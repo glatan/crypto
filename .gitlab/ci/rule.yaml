@@ -51,7 +51,7 @@ workflow:
 .wasm32_test_rule:
   rules:
     # - if: $[[ inputs.ENABLE_WASM32_TEST ]]
-    - if: $DISABLE_WASM32_TEST != "true"
+    - if: $DISABLE_WASM32_TEST == "true"
       when: never
     - *disable_merge_request_event
     - *file_change_rule

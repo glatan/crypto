@@ -1,4 +1,4 @@
-.linux_template:
+.linux_script_template:
   before_script:
     - set -ex
     - rustup target add ${TARGET}
@@ -43,8 +43,6 @@
         TARGET: riscv64gc-unknown-linux-gnu
       - PACKAGES: gcc-powerpc64le-linux-gnu
         TARGET: powerpc64le-unknown-linux-musl
-      - PACKAGES: gcc-riscv64-linux-gnu
-        TARGET: riscv64gc-unknown-linux-musl
       - PACKAGES: gcc-s390x-linux-gnu
         TARGET: s390x-unknown-linux-gnu
       - PACKAGES: gcc
@@ -71,6 +69,8 @@
         TARGET: i586-unknown-linux-gnu
       - PACKAGES: gcc-i686-linux-gnu
         TARGET: i586-unknown-linux-musl
+      - PACKAGES: gcc-riscv64-linux-gnu
+        TARGET: riscv64gc-unknown-linux-musl
       - PACKAGES: gcc-sparc64-linux-gnu
         TARGET: sparc64-unknown-linux-gnu
       - PACKAGES: gcc-arm-linux-gnueabihf

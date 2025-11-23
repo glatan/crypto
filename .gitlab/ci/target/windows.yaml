@@ -1,6 +1,4 @@
-.windows-msvc_template:
-  tags:
-    - saas-windows-medium-amd64
+.windows-msvc_script_template:
   before_script:
     - .gitlab\script\setup_rustup_windows.ps1
   script:
@@ -16,31 +14,29 @@
 
 # gnullvmのビルドがエラーになる
 # https://github.com/msys2/MINGW-packages/pull/20989 待ち
-.windows-msys2_template:
-  tags:
-    - saas-windows-medium-amd64
+.windows-msys2_script_template:
   before_script:
-    - .gitlab\script\setup_msys2.ps1 -Env $MSYS_ENV
-    - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Sy $PACKAGES"
+    - .gitlab\script\setup_msys2.ps1 -Env ${MSYS_ENV}
+    - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Sy mingw-w64-rustup"
+    - C:\msys64\usr\bin\bash -lc "rustup default ${RUST_VERSION}"
+    - C:\msys64\usr\bin\bash -lc "rustup target add ${TARGET}"
   script:
-    - C:\msys64\usr\bin\bash -lc "cargo test --workspace --target $TARGET"
+    - C:\msys64\usr\bin\bash -lc "cargo test --workspace --target ${TARGET}"
 
 .windows-gnu_matrix_template:
   parallel:
     matrix:
       - TARGET: i686-pc-windows-gnu
-        PACKAGES: mingw-w64-i686-rust
-        MSYS_ENV: MINGW32
-      - TARGET: x86_64-pc-windows-gnu
-        PACKAGES: mingw-w64-x86_64-rust
         MSYS_ENV: MINGW64
+      - TARGET: x86_64-pc-windows-gnu
+        MSYS_ENV: MINGW64
+      - TARGET: x86_64-pc-windows-gnu
+        MSYS_ENV: UCRT64
 
 .windows-gnullvm_matrix_template:
   parallel:
     matrix:
       - TARGET: i686-pc-windows-gnullvm
-        PACKAGES: mingw-w64-clang-i686-rust
-        MSYS_ENV: CLANG32
+        MSYS_ENV: CLANG64
       - TARGET: x86_64-pc-windows-gnullvm
-        PACKAGES: mingw-w64-clang-x86_64-rust
         MSYS_ENV: CLANG64

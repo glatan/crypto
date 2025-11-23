@@ -1,4 +1,4 @@
-.wasm32-wasi_template:
+.wasm32-wasi_script_template:
   before_script:
     - set -ex
     - rustup target add ${TARGET}

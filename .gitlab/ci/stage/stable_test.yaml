@@ -1,48 +1,62 @@
+.stable_test_base:
+  stage: stable_test
+
+.stable_test_linux_host_base:
+  image: $STABLE_LINUX_BASE_IMAGE
+  extends:
+    - .stable_test_base
+
+.stable_test_windows_host_base:
+  tags:
+    - saas-windows-medium-amd64
+  extends:
+    - .stable_test_base
+
 stable_tier1_linux_test:
   extends:
     - .tier1_linux_test_rule
-    - .stable_test_base
-    - .linux_template
+    - .stable_test_linux_host_base
+    - .linux_script_template
     - .tier1_linux_matrix_template
 
 stable_tier2_with_host_tool_linux_test:
   extends:
     - .tier2_with_host_tool_linux_test_rule
-    - .stable_test_base
-    - .linux_template
+    - .stable_test_linux_host_base
+    - .linux_script_template
     - .tier2_with_host_tool_linux_matrix_template
 
 stable_tier2_without_host_tool_linux_test:
   extends:
     - .tier2_without_host_tool_linux_test_rule
-    - .stable_test_base
-    - .linux_template
+    - .stable_test_linux_host_base
+    - .linux_script_template
     - .tier2_without_host_tool_linux_matrix_template
 
 stable_wasm32-wasi_test:
   extends:
     - .wasm32_test_rule
-    - .stable_test_base
-    - .wasm32-wasi_template
+    - .stable_test_linux_host_base
+    - .wasm32-wasi_script_template
     - .wasm32-wasi_matrix_template
 
 stable_windows-msvc_test:
   extends:
     - .windows-msvc_rule
-    - .stable_test_base
-    - .windows-msvc_template
+    - .stable_test_windows_host_base
+    - .windows-msvc_script_template
     - .windows-msvc_matrix_template
 
 stable_windows-gnu_test:
   extends:
     - .windows-gnu_rule
-    - .stable_test_base
-    - .windows-msys2_template
+    - .stable_test_windows_host_base
+    - .windows-msys2_script_template
     - .windows-gnu_matrix_template
 
 stable_windows-gnullvm_test:
   extends:
     - .windows-gnullvm_rule
-    - .stable_test_base
-    - .windows-msys2_template
+    - .stable_test_windows_host_base
+    - .windows-msys2_script_template
     - .windows-gnullvm_matrix_template

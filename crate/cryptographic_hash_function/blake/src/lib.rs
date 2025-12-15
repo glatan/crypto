@@ -30,6 +30,7 @@ use crate::consts::{C32, C64, IV224, IV256, IV384, IV512, SIGMA};
 
 // Blake<u32>: BLAKE-224(BLAKE-28) and BLAKE-256(BLAKE-32)
 // Blake<u64>: BLAKE-384(BLAKE-48) and BLAKE-512(BLAKE-64)
+#[derive(Clone, Copy)]
 struct Blake<T, const ROUND: usize> {
     salt: [T; 4],
     l: usize, // 未処理のビット数

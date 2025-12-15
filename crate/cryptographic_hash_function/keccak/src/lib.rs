@@ -30,7 +30,7 @@ use core::{
     {any, mem},
 };
 
-use cryptographic_hash_function::CryptographicHashFunction;
+use cryptographic_hash_function::{BlockSize, CryptographicHashFunction, DigestSize};
 
 use consts::{R200, R400, R800, R1600, RC200, RC400, RC800, RC1600};
 pub use keccak224::Keccak224;
@@ -38,6 +38,7 @@ pub use keccak256::Keccak256;
 pub use keccak384::Keccak384;
 pub use keccak512::Keccak512;
 
+#[derive(Clone, Copy)]
 struct Keccak<T> {
     state: [[T; 5]; 5], // A, S
     l: usize,
@@ -48,6 +49,7 @@ struct Keccak<T> {
 
 macro_rules! impl_keccak_f {
     ($Name: ident, $Size: ident, $Bitrate: expr, $RC: expr, $R: expr) => {
+        #[derive(Clone, Copy)]
         pub struct $Name(Keccak<$Size>);
         impl $Name {
             pub fn new(r: usize, c: usize, n: usize) -> Self {
@@ -238,6 +240,17 @@ macro_rules! impl_keccak_f {
         impl CryptographicHashFunction for $Name {
             fn hash_to_bytes(&mut self, message: &[u8]) -> Vec<u8> {
                 self.keccak(message, 0x01)
+            }
+        }
+        impl BlockSize for $Name {
+            // FIPS 202 Table 3
+            fn byte_block_len(&self) -> usize {
+                self.0.r
+            }
+        }
+        impl DigestSize for $Name {
+            fn byte_digest_len(&self) -> usize {
+                self.0.n
             }
         }
     };

@@ -6,10 +6,11 @@ mod consts;
 
 use alloc::vec::Vec;
 
-use cryptographic_hash_function::CryptographicHashFunction;
+use cryptographic_hash_function::{BlockSize, CryptographicHashFunction, DigestSize};
 
 use crate::consts::STABLE;
 
+#[derive(Clone, Copy)]
 pub struct Md2 {
     state: [u8; 48],
 }
@@ -80,6 +81,18 @@ impl CryptographicHashFunction for Md2 {
             self.compress_checksum(message, &block);
         }
         self.state[0..16].to_vec()
+    }
+}
+
+impl BlockSize for Md2 {
+    fn byte_block_len(&self) -> usize {
+        16
+    }
+}
+
+impl DigestSize for Md2 {
+    fn byte_digest_len(&self) -> usize {
+        16
     }
 }
 

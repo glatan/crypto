@@ -1,7 +1,7 @@
 use alloc::vec::Vec;
 use core::cmp::Ordering;
 
-use cryptographic_hash_function::CryptographicHashFunction;
+use cryptographic_hash_function::{BlockSize, CryptographicHashFunction, DigestSize};
 use merkle_damgard::impl_md_flow;
 
 use crate::{
@@ -11,6 +11,7 @@ use crate::{
     {round_left_128, round_right_128},
 };
 
+#[derive(Clone, Copy)]
 pub struct Ripemd128 {
     status: [u32; 4],
 }
@@ -58,6 +59,18 @@ impl CryptographicHashFunction for Ripemd128 {
             .iter()
             .flat_map(|word| word.to_le_bytes().to_vec())
             .collect()
+    }
+}
+
+impl BlockSize for Ripemd128 {
+    fn byte_block_len(&self) -> usize {
+        4 * 16
+    }
+}
+
+impl DigestSize for Ripemd128 {
+    fn byte_digest_len(&self) -> usize {
+        16
     }
 }
 

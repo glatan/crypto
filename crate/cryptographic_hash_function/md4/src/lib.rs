@@ -5,7 +5,7 @@ extern crate alloc;
 use alloc::vec::Vec;
 use core::cmp::Ordering;
 
-use cryptographic_hash_function::CryptographicHashFunction;
+use cryptographic_hash_function::{BlockSize, CryptographicHashFunction, DigestSize};
 use merkle_damgard::impl_md_flow;
 
 #[inline(always)]
@@ -44,6 +44,7 @@ const fn round3(a: u32, b: u32, c: u32, d: u32, k: u32, s: u32) -> u32 {
         .rotate_left(s)
 }
 
+#[derive(Clone, Copy)]
 pub struct Md4 {
     status: [u32; 4],
 }
@@ -130,6 +131,18 @@ impl CryptographicHashFunction for Md4 {
             .iter()
             .flat_map(|word| word.to_le_bytes().to_vec())
             .collect()
+    }
+}
+
+impl BlockSize for Md4 {
+    fn byte_block_len(&self) -> usize {
+        4 * 16
+    }
+}
+
+impl DigestSize for Md4 {
+    fn byte_digest_len(&self) -> usize {
+        16
     }
 }
 

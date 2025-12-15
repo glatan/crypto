@@ -6,7 +6,7 @@ mod consts;
 use alloc::vec::Vec;
 use core::cmp::Ordering;
 
-use cryptographic_hash_function::CryptographicHashFunction;
+use cryptographic_hash_function::{BlockSize, CryptographicHashFunction, DigestSize};
 use merkle_damgard::impl_md_flow;
 
 use crate::consts::{IV, K};
@@ -24,6 +24,7 @@ pub(crate) const fn maj(b: u32, c: u32, d: u32) -> u32 {
     (b & c) | (b & d) | (c & d)
 }
 
+#[derive(Clone, Copy)]
 pub struct Sha1 {
     status: [u32; 5],
 }
@@ -123,6 +124,18 @@ impl CryptographicHashFunction for Sha1 {
             .iter()
             .flat_map(|word| word.to_be_bytes().to_vec())
             .collect()
+    }
+}
+
+impl BlockSize for Sha1 {
+    fn byte_block_len(&self) -> usize {
+        4 * 16
+    }
+}
+
+impl DigestSize for Sha1 {
+    fn byte_digest_len(&self) -> usize {
+        20
     }
 }
 

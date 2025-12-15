@@ -25,6 +25,20 @@ pub trait CryptographicHashFunction {
     }
 }
 
+pub trait BlockSize {
+    fn bit_block_len(&self) -> usize {
+        self.byte_block_len() * 8
+    }
+    fn byte_block_len(&self) -> usize;
+}
+
+pub trait DigestSize {
+    fn bit_digest_len(&self) -> usize {
+        self.byte_digest_len() * 8
+    }
+    fn byte_digest_len(&self) -> usize;
+}
+
 #[cfg(test)]
 mod tests {
     use alloc::{vec, vec::Vec};

@@ -1,7 +1,6 @@
 [package]
 name = "md5"
 version = "0.1.0"
-authors.workspace = true
 edition.workspace = true
 rust-version.workspace = true
 license.workspace = true
@@ -17,3 +16,5 @@ cryptographic_hash_function = { path = "../cryptographic_hash_function" }
 
 [dev-dependencies]
 dev-util = { path = "../dev-util" }
+byte = { path = "../../byte" }
+hmac = { path = "../../mac/hmac" }

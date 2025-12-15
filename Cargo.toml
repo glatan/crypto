@@ -5,7 +5,6 @@ readme = "README.md"
 edition = "2024"
 
 [workspace.package]
-authors = ["glatan <gitlab.com.crying257@passinbox.com>"]
 edition = "2024"
 rust-version = "1.91.1"
 license = "GPL-3.0-only"
@@ -37,6 +36,7 @@ all=[
     "sha2",
     "sha3",
     "cryptographic_hash_function",
+    "hmac",
 ]
 
 [dependencies]
@@ -53,6 +53,7 @@ sha1 = { path = "crate/cryptographic_hash_function/sha1", optional = true }
 sha2 = { path = "crate/cryptographic_hash_function/sha2", optional = true }
 sha3 = { path = "crate/cryptographic_hash_function/sha3", optional = true }
 cryptographic_hash_function = { path = "crate/cryptographic_hash_function/cryptographic_hash_function", optional = true }
+hmac = { path = "crate/mac/hmac", optional = true }
 
 [workspace]
 members = [
@@ -70,7 +71,10 @@ members = [
     "crate/cryptographic_hash_function/sha2",
     "crate/cryptographic_hash_function/sha3",
     "crate/cryptographic_hash_function/dev-util",
-    "crate/cryptographic_hash_function/merkle_damgard"
+    "crate/cryptographic_hash_function/cryptographic_hash_function",
+    "crate/cryptographic_hash_function/merkle_damgard",
+    "crate/mac/hmac",
+    "crate/byte"
 ]
 exclude = [
     "examples",

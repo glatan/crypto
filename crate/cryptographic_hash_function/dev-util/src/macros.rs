@@ -16,6 +16,19 @@ macro_rules! impl_test {
 }
 
 #[macro_export]
+macro_rules! impl_hmac_test {
+    ($self:ident, $test_cases:ident, $hasher:expr) => {
+        #[test]
+        fn lower_hex() {
+            for (key, message, expected_digest) in $test_cases.iter() {
+                let digest = bytes_to_lowerhex($hasher.hmac_hash_to_bytes(message, key).as_ref());
+                assert_eq!(&digest, *expected_digest);
+            }
+        }
+    };
+}
+
+#[macro_export]
 macro_rules! impl_short_msg_kat {
     ($module:ident, $T:ident, $test_cases:ident, $hasher:expr) => {
         #[allow(non_snake_case)]

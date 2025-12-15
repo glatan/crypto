@@ -10,6 +10,7 @@ mod edonr512;
 
 use core::cmp::Ordering;
 
+use cryptographic_hash_function::BlockSize;
 use merkle_damgard::impl_md_flow;
 
 use consts::{P224, P256, P384, P512};
@@ -260,6 +261,7 @@ pub(crate) const fn q512(x: &[u64; 8], y: &[u64; 8]) -> [u64; 8] {
     z
 }
 
+#[derive(Clone, Copy)]
 struct EdonR<T> {
     state: [T; 16],
 }
@@ -340,6 +342,12 @@ impl EdonR<u32> {
     }
     fn edonr(&mut self, message: &[u8]) {
         impl_md_flow!(u32=> self, message, from_le_bytes, to_le_bytes);
+    }
+}
+
+impl BlockSize for EdonR<u32> {
+    fn byte_block_len(&self) -> usize {
+        4 * 16
     }
 }
 
@@ -505,5 +513,11 @@ impl EdonR<u64> {
                 }
             }
         }
+    }
+}
+
+impl BlockSize for EdonR<u64> {
+    fn byte_block_len(&self) -> usize {
+        8 * 16
     }
 }

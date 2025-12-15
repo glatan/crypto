@@ -13,6 +13,7 @@ mod sha512trunc256;
 
 use core::cmp::Ordering;
 
+use cryptographic_hash_function::BlockSize;
 use merkle_damgard::impl_md_flow;
 
 use crate::consts::{H224, H256, H384, H512, H512_TRUNC224, H512_TRUNC256, K32, K64};
@@ -76,6 +77,7 @@ pub(crate) const fn small_sigma64_1(x: u64) -> u64 {
 
 // Sha2<u32>: SHA-224 and SHA-256
 // Sha2<u64>: SHA-384, SHA-512, SHA-512/224 and SHA-512/256
+#[derive(Clone, Copy)]
 struct Sha2<T> {
     status: [T; 8],
 }
@@ -131,6 +133,12 @@ impl Sha2<u32> {
     }
 }
 
+impl BlockSize for Sha2<u32> {
+    fn byte_block_len(&self) -> usize {
+        4 * 16
+    }
+}
+
 impl Sha2<u64> {
     const fn new(iv: [u64; 8]) -> Self {
         Self { status: iv }
@@ -179,5 +187,11 @@ impl Sha2<u64> {
     }
     fn sha2(&mut self, message: &[u8]) {
         impl_md_flow!(u64=> self, message, from_be_bytes, to_be_bytes);
+    }
+}
+
+impl BlockSize for Sha2<u64> {
+    fn byte_block_len(&self) -> usize {
+        8 * 16
     }
 }

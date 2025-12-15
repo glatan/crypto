@@ -12,6 +12,7 @@ use crate::consts::{IV32, IV64, SIGMA};
 pub use blake2b::Blake2b;
 pub use blake2s::Blake2s;
 
+#[derive(Clone, Copy)]
 struct Blake2<T> {
     f: bool,  // finalization flag
     l: usize, // 未処理のバイト数
@@ -125,7 +126,7 @@ impl Blake2<u32> {
         self.v[13] = IV32[5] ^ self.t[1];
         if self.f {
             self.v[14] = IV32[6] ^ u32::MAX;
-            self.v[15] = IV32[7] ^ u32::MIN;
+            self.v[15] = IV32[7];
         } else {
             self.v[14] = IV32[6];
             self.v[15] = IV32[7];
@@ -255,7 +256,7 @@ impl Blake2<u64> {
         self.v[13] = IV64[5] ^ self.t[1];
         if self.f {
             self.v[14] = IV64[6] ^ u64::MAX;
-            self.v[15] = IV64[7] ^ u64::MIN;
+            self.v[15] = IV64[7];
         } else {
             self.v[14] = IV64[6];
             self.v[15] = IV64[7];

@@ -5,7 +5,7 @@ extern crate alloc;
 use alloc::vec::Vec;
 use core::cmp::Ordering;
 
-use cryptographic_hash_function::CryptographicHashFunction;
+use cryptographic_hash_function::{BlockSize, CryptographicHashFunction, DigestSize};
 use merkle_damgard::impl_md_flow;
 
 #[rustfmt::skip]
@@ -84,6 +84,7 @@ const fn round4(a: u32, b: u32, c: u32, d: u32, k: u32, s: u32, t: u32) -> u32 {
     )
 }
 
+#[derive(Debug, Clone)]
 pub struct Md5 {
     status: [u32; 4],
 }
@@ -190,12 +191,24 @@ impl CryptographicHashFunction for Md5 {
     }
 }
 
+impl BlockSize for Md5 {
+    fn byte_block_len(&self) -> usize {
+        4 * 16
+    }
+}
+
+impl DigestSize for Md5 {
+    fn byte_digest_len(&self) -> usize {
+        16
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::Md5;
     use dev_util::impl_test;
 
-    const OFFICIAL: [(&[u8], &str); 7] = [
+    const RFC1321: [(&[u8], &str); 7] = [
         // https://tools.ietf.org/html/rfc1321
         ("".as_bytes(), "d41d8cd98f00b204e9800998ecf8427e"),
         ("a".as_bytes(), "0cc175b9c0f1b6a831c399e269772661"),
@@ -218,5 +231,29 @@ mod tests {
             "57edf4a22be3c955ac49da2e2107b67a",
         ),
     ];
-    impl_test!(Md5, official, OFFICIAL, Md5::default());
+    impl_test!(Md5, md5_rfc1321, RFC1321, Md5::default());
+
+    mod hmac {
+        use crate::Md5;
+
+        use hmac::Hmac;
+
+        use byte::bytes_to_lowerhex;
+        use dev_util::impl_hmac_test;
+
+        const RFC2104: [(&[u8], &[u8], &str); 3] = [
+            (
+                &[0x0b; 16],
+                "Hi There".as_bytes(),
+                "9294727a3638bb1c13f48ef8158bfc9d",
+            ),
+            (
+                "Jefe".as_bytes(),
+                "what do ya want for nothing?".as_bytes(),
+                "750c783e6ab0b503eaa86e310a5db738",
+            ),
+            (&[0xAA; 16], &[0xDD; 50], "56be34521d144c88dbb8c733f0e8b3f6"),
+        ];
+        impl_hmac_test!(Md5, RFC2104, Md5::default());
+    }
 }

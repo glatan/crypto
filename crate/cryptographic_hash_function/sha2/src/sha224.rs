@@ -1,9 +1,10 @@
 use alloc::vec::Vec;
 
-use cryptographic_hash_function::CryptographicHashFunction;
+use cryptographic_hash_function::{BlockSize, CryptographicHashFunction, DigestSize};
 
 use super::{H224, Sha2};
 
+#[derive(Clone, Copy)]
 pub struct Sha224(Sha2<u32>);
 
 impl Sha224 {
@@ -16,6 +17,18 @@ impl Default for Sha224 {
     #[rustfmt::skip]
     fn default() -> Self {
         Self(Sha2::<u32>::new(H224))
+    }
+}
+
+impl BlockSize for Sha224 {
+    fn byte_block_len(&self) -> usize {
+        self.0.byte_block_len()
+    }
+}
+
+impl DigestSize for Sha224 {
+    fn byte_digest_len(&self) -> usize {
+        28
     }
 }
 

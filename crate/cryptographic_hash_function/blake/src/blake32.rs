@@ -1,11 +1,12 @@
 use alloc::vec::Vec;
 
-use cryptographic_hash_function::CryptographicHashFunction;
+use cryptographic_hash_function::{BlockSize, CryptographicHashFunction, DigestSize};
 
 use super::{Blake, IV256};
 
 const ROUND: usize = 10;
 
+#[derive(Clone, Copy)]
 pub struct Blake32(Blake<u32, ROUND>);
 
 impl Blake32 {
@@ -30,5 +31,17 @@ impl CryptographicHashFunction for Blake32 {
             .iter()
             .flat_map(|word| word.to_be_bytes().to_vec())
             .collect()
+    }
+}
+
+impl BlockSize for Blake32 {
+    fn byte_block_len(&self) -> usize {
+        4 * 16
+    }
+}
+
+impl DigestSize for Blake32 {
+    fn byte_digest_len(&self) -> usize {
+        32
     }
 }

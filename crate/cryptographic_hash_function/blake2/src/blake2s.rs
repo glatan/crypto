@@ -1,10 +1,11 @@
 use alloc::vec::Vec;
 
-use cryptographic_hash_function::CryptographicHashFunction;
+use cryptographic_hash_function::{BlockSize, CryptographicHashFunction, DigestSize};
 
 use super::Blake2;
 use crate::consts::IV32;
 
+#[derive(Clone, Copy)]
 pub struct Blake2s(Blake2<u32>);
 
 impl Blake2s {
@@ -87,5 +88,17 @@ impl CryptographicHashFunction for Blake2s {
             .flat_map(|word| word.to_le_bytes().to_vec())
             .collect::<Vec<u8>>()[0..(self.0.n)]
             .to_vec()
+    }
+}
+
+impl BlockSize for Blake2s {
+    fn byte_block_len(&self) -> usize {
+        8 * 16
+    }
+}
+
+impl DigestSize for Blake2s {
+    fn byte_digest_len(&self) -> usize {
+        self.0.n
     }
 }

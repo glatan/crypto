@@ -1,9 +1,10 @@
 use alloc::vec::Vec;
 
-use cryptographic_hash_function::CryptographicHashFunction;
+use cryptographic_hash_function::{BlockSize, CryptographicHashFunction, DigestSize};
 
 use super::{EdonR, P256};
 
+#[derive(Clone, Copy)]
 pub struct EdonR256(EdonR<u32>);
 
 impl EdonR256 {
@@ -15,6 +16,18 @@ impl EdonR256 {
 impl Default for EdonR256 {
     fn default() -> Self {
         Self(EdonR::<u32>::new(P256))
+    }
+}
+
+impl BlockSize for EdonR256 {
+    fn byte_block_len(&self) -> usize {
+        self.0.byte_block_len()
+    }
+}
+
+impl DigestSize for EdonR256 {
+    fn byte_digest_len(&self) -> usize {
+        32
     }
 }
 

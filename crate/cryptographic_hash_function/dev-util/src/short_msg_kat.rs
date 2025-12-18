@@ -1,155 +1,177 @@
-#[macro_export]
-macro_rules! impl_short_msg_kat_from_file {
-    // $path should be a string literal path to the KAT file (relative to the test file that invokes the macro)
-    ($file:expr, $hasher:expr) => {
-        use byte::hex_to_bytes;
+use std::path::Path;
+use std::{fs, panic};
 
-        #[test]
-        fn short_msg_kat() {
-            // include the KAT text at compile time
-            let txt: &str = include_str!($file);
+use byte::hex_to_bytes;
+use cryptographic_hash_function::CryptographicHashFunction;
+use hmac::Hmac;
 
-            let mut lines = txt.lines();
-            let mut entries: Vec<(String, String)> = Vec::new();
-
-            while let Some(line) = lines.next() {
-                let line = line.trim();
-                if line.is_empty() || line.starts_with('#') {
-                    continue;
-                }
-                if line.starts_with("Len") {
-                    // advance to find Msg and MD lines for this Len block
-                    let mut len: usize = if let Some(idx) = line.find('=') {
-                        line[idx + 1..].trim().parse().unwrap()
-                    } else {
-                        panic!("Invalid Len line");
-                    };
-                    let mut msg_value = "";
-                    let mut md_value = "";
-                    loop {
-                        match lines.next() {
-                            Some(line) => {
-                                let line = line.trim();
-                                if line.is_empty() || line.starts_with('#') {
-                                    continue;
-                                }
-                                if line.starts_with("Msg") {
-                                    if let Some(idx) = line.find('=') {
-                                        msg_value = line[idx + 1..].trim();
-                                    }
-                                    continue;
-                                } else if line.starts_with("MD") {
-                                    if let Some(idx) = line.find('=') {
-                                        md_value = line[idx + 1..].trim();
-                                    }
-                                    assert_eq!(len, msg_value.len() * 4, "{msg_value}");
-                                    // we got MD, end of block
-                                    break;
-                                } else {
-                                    // ignore unexpected lines
-                                    continue;
-                                }
-                            }
-                            None => break,
-                        }
-                    }
-                    entries.push((msg_value.to_string(), md_value.to_string()));
-                }
-            }
-
-            for (message, expected) in entries.into_iter() {
-                println!("Bytes: {:?}, Hex: {}", hex_to_bytes(&message), message);
-                let digest = $hasher.hash_to_lowerhex(&hex_to_bytes(&message));
-                assert_eq!(
-                    digest, expected,
-                    "mismatched digest for message hex '{}'",
-                    message
-                );
-            }
-        }
-    };
+struct ShortMsgKatEntry {
+    msg: String,
+    md: String,
 }
 
-#[macro_export]
-macro_rules! impl_short_msg_kat_hmac_from_file {
-    // $path should be a string literal path to the KAT file (relative to the test file that invokes the macro)
-    ($file:expr, $hasher:expr) => {
-        use byte::hex_to_bytes;
+impl ShortMsgKatEntry {
+    fn assert(&self, hasher: &mut impl CryptographicHashFunction) {
+        assert_eq!(self.md, hasher.hash_to_lowerhex(&hex_to_bytes(&self.msg)));
+    }
+}
 
-        #[test]
-        fn short_msg_kat_hmac() {
-            // include the KAT text at compile time
-            let txt: &str = include_str!($file);
+pub struct ShortMsgKat {
+    entries: Vec<ShortMsgKatEntry>,
+}
 
-            let mut lines = txt.lines();
-            let mut entries: Vec<(String, String, String)> = Vec::new();
+impl ShortMsgKat {
+    pub fn assert<Hasher>(&self, hasher: &mut Hasher)
+    where
+        Hasher: CryptographicHashFunction + Clone,
+    {
+        for entry in &self.entries {
+            entry.assert(&mut hasher.clone());
+        }
+    }
+}
 
-            while let Some(line) = lines.next() {
-                let line = line.trim();
-                if line.is_empty() || line.starts_with('#') {
-                    continue;
-                }
-                if line.starts_with("MsgLen") {
-                    // advance to find Msg and MD lines for this Len block
-                    let mut len: usize = if let Some(idx) = line.find('=') {
-                        line[idx + 1..].trim().parse().unwrap()
-                    } else {
-                        panic!("Invalid MsgLen line");
-                    };
-                    let mut msg_value = "";
-                    let mut key_value = "";
-                    let mut md_value = "";
-                    loop {
-                        match lines.next() {
-                            Some(line) => {
-                                let line = line.trim();
-                                if line.is_empty() || line.starts_with('#') {
-                                    continue;
-                                }
-                                if line.starts_with("Msg") {
-                                    if let Some(idx) = line.find('=') {
-                                        msg_value = line[idx + 1..].trim();
-                                    }
-                                    continue;
-                                } else if line.starts_with("Key") {
-                                    if let Some(idx) = line.find('=') {
-                                        key_value = line[idx + 1..].trim();
-                                    }
-                                    assert_eq!(64 * 8, key_value.len() * 4, "{key_value}");
-                                    continue;
-                                } else if line.starts_with("MD") {
-                                    if let Some(idx) = line.find('=') {
-                                        md_value = line[idx + 1..].trim();
-                                    }
-                                    assert_eq!(len, msg_value.len() * 4, "{msg_value}");
-                                    // we got MD, end of block
-                                    break;
-                                } else {
-                                    // ignore unexpected lines
-                                    continue;
-                                }
-                            }
-                            None => break,
-                        }
-                    }
-                    entries.push((
-                        msg_value.to_string(),
-                        key_value.to_string(),
-                        md_value.to_string(),
-                    ));
-                }
+impl<T: AsRef<Path>> From<T> for ShortMsgKat {
+    fn from(value: T) -> Self {
+        let txt = fs::read_to_string(value).expect("Failed to read file");
+        let mut kat = Self {
+            entries: Vec::new(),
+        };
+
+        let mut lines = txt.lines();
+        while let Some(line) = lines.next() {
+            let line = line.trim();
+            if line.is_empty() || line.starts_with('#') {
+                continue;
             }
-
-            for (message, key, expected) in entries.into_iter() {
-                println!("Bytes: {:?}, Hex: {}", hex_to_bytes(&message), message);
-                let digest =
-                    $hasher.hmac_hash_to_lower_hex(&hex_to_bytes(&message), &hex_to_bytes(&key));
-                assert_eq!(
-                    digest, expected,
-                    "mismatched digest for message hex '{}'",
-                    message
-                );
+            if line.starts_with("Len") {
+                // advance to find Msg and MD lines for this Len block
+                let len: usize = if let Some(idx) = line.find('=') {
+                    line[idx + 1..].trim().parse().unwrap()
+                } else {
+                    panic!("Invalid Len line");
+                };
+                let mut msg = "";
+                let mut md = "";
+                for line in lines.by_ref() {
+                    let line = line.trim();
+                    match line {
+                        line if line.is_empty() || line.starts_with('#') => continue,
+                        line if line.starts_with("Msg") => {
+                            if let Some(idx) = line.find('=') {
+                                msg = line[idx + 1..].trim();
+                            }
+                            continue;
+                        }
+                        line if line.starts_with("MD") => {
+                            if let Some(idx) = line.find('=') {
+                                md = line[idx + 1..].trim();
+                            }
+                            assert_eq!(len, msg.len() * 4, "{msg}");
+                            break;
+                        }
+                        _ => continue,
+                    }
+                }
+                kat.entries.push(ShortMsgKatEntry {
+                    msg: msg.to_string(),
+                    md: md.to_string(),
+                });
             }
         }
-    };
+
+        kat
+    }
+}
+
+struct ShortMsgKatHmacEntry {
+    msg: String,
+    md: String,
+    key: String,
+}
+
+impl ShortMsgKatHmacEntry {
+    fn assert(&self, hasher: &mut impl Hmac) {
+        assert_eq!(
+            self.md,
+            hasher.hmac_hash_to_lower_hex(&hex_to_bytes(&self.msg), &hex_to_bytes(&self.key))
+        );
+    }
+}
+
+pub struct ShortMsgKatHmac {
+    entries: Vec<ShortMsgKatHmacEntry>,
+}
+
+impl ShortMsgKatHmac {
+    pub fn assert<Hasher>(&self, hasher: &mut Hasher)
+    where
+        Hasher: Hmac + Clone,
+    {
+        for entry in &self.entries {
+            entry.assert(&mut hasher.clone());
+        }
+    }
+}
+
+impl<T: AsRef<Path>> From<T> for ShortMsgKatHmac {
+    fn from(value: T) -> Self {
+        let txt = fs::read_to_string(value).expect("Failed to read file");
+        let mut kat = Self {
+            entries: Vec::new(),
+        };
+
+        let mut lines = txt.lines();
+        while let Some(line) = lines.next() {
+            let line = line.trim();
+            if line.is_empty() || line.starts_with('#') {
+                continue;
+            }
+            if line.starts_with("Len") {
+                // advance to find Msg and MD lines for this Len block
+                let len: usize = if let Some(idx) = line.find('=') {
+                    line[idx + 1..].trim().parse().unwrap()
+                } else {
+                    panic!("Invalid Len line");
+                };
+                let mut msg = "";
+                let mut key = "";
+                let mut md = "";
+                for line in lines.by_ref() {
+                    let line = line.trim();
+                    match line {
+                        line if line.is_empty() || line.starts_with('#') => continue,
+                        line if line.starts_with("Msg") => {
+                            if let Some(idx) = line.find('=') {
+                                msg = line[idx + 1..].trim();
+                            }
+                            continue;
+                        }
+                        linne if line.starts_with("Key") => {
+                            if let Some(idx) = line.find('=') {
+                                key = line[idx + 1..].trim();
+                            }
+                            assert_eq!(64 * 8, key.len() * 4, "{key}");
+                            continue;
+                        }
+                        line if line.starts_with("MD") => {
+                            if let Some(idx) = line.find('=') {
+                                md = line[idx + 1..].trim();
+                            }
+                            assert_eq!(len, msg.len() * 4, "{msg}");
+                            break;
+                        }
+                        _ => continue,
+                    }
+                }
+                kat.entries.push(ShortMsgKatHmacEntry {
+                    msg: msg.to_string(),
+                    md: md.to_string(),
+                    key: key.to_string(),
+                });
+            }
+        }
+
+        kat
+    }
 }

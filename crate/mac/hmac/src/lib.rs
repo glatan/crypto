@@ -28,13 +28,24 @@ pub trait Hmac {
 }
 
 impl<T: CryptographicHashFunction + BlockSize + DigestSize + Clone> Hmac for T {
+    /// ### panics
+    /// if digest length is greater than block length
     fn hmac_hash_to_bytes(&mut self, message: &[u8], key: &[u8]) -> Vec<u8> {
+        if self.byte_digest_len() > self.byte_block_len() {
+            panic!(
+                "digest length {} is greater than block length {}",
+                self.byte_digest_len(),
+                self.byte_block_len()
+            );
+        }
+
         let mut inner_hasher = self.clone();
         let mut outer_hasher = self.clone();
 
         let mut zero_filled_key = vec![0u8; self.byte_block_len()];
         if key.len() > self.byte_block_len() {
-            let hashed_key = self.hash_to_bytes(key);
+            let mut key_hasher = self.clone();
+            let hashed_key = key_hasher.hash_to_bytes(key);
             zero_filled_key[..self.byte_digest_len()].copy_from_slice(&hashed_key);
         } else {
             zero_filled_key[..key.len()].copy_from_slice(key);

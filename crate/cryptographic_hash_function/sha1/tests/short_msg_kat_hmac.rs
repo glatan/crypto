@@ -1,6 +1,14 @@
-use dev_util::impl_short_msg_kat_hmac_from_file;
+use std::path::Path;
 
-use hmac::Hmac;
+use dev_util::short_msg_kat::ShortMsgKatHmac;
 use sha1::Sha1;
 
-impl_short_msg_kat_hmac_from_file!("ShortMsgKAT_HMAC.txt", Sha1::default());
+#[test]
+fn short_msg_kat_hmac() {
+    let file = Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("tests")
+        .join("ShortMsgKAT_HMAC.txt");
+    let kat = ShortMsgKatHmac::from(file);
+    let mut hasher = Sha1::default();
+    kat.assert(&mut hasher);
+}

@@ -7,6 +7,7 @@ use ripemd::{Ripemd, Ripemd128, Ripemd160, Ripemd256, Ripemd320};
 fn short_msg_kat_hmac() {
     let file = Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("tests")
+        .join("ripemd")
         .join("ShortMsgKAT_HMAC.txt");
     let kat = ShortMsgKat::from(file);
     let mut hasher = Ripemd::new();
@@ -17,6 +18,7 @@ fn short_msg_kat_hmac() {
 fn short_msg_kat_hmac_128() {
     let file = Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("tests")
+        .join("ripemd")
         .join("ShortMsgKAT_HMAC_128.txt");
     let kat = ShortMsgKat::from(file);
     let mut hasher = Ripemd128::new();
@@ -27,6 +29,7 @@ fn short_msg_kat_hmac_128() {
 fn short_msg_kat_hmac_160() {
     let file = Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("tests")
+        .join("ripemd")
         .join("ShortMsgKAT_HMAC_160.txt");
     let kat = ShortMsgKat::from(file);
     let mut hasher = Ripemd160::new();
@@ -37,6 +40,7 @@ fn short_msg_kat_hmac_160() {
 fn short_msg_kat_hmac_256() {
     let file = Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("tests")
+        .join("ripemd")
         .join("ShortMsgKAT_HMAC_256.txt");
     let kat = ShortMsgKat::from(file);
     let mut hasher = Ripemd256::new();
@@ -47,6 +51,7 @@ fn short_msg_kat_hmac_256() {
 fn short_msg_kat_hmac_320() {
     let file = Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("tests")
+        .join("ripemd")
         .join("ShortMsgKAT_HMAC_320.txt");
     let kat = ShortMsgKat::from(file);
     let mut hasher = Ripemd320::new();

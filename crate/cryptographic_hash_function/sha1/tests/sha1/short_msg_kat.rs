@@ -7,6 +7,7 @@ use sha1::Sha1;
 fn short_msg_kat() {
     let file = Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("tests")
+        .join("sha1")
         .join("ShortMsgKAT.txt");
     let kat = ShortMsgKat::from(file);
     let mut hasher = Sha1::new();

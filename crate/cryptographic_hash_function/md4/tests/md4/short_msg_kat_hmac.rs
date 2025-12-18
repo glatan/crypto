@@ -7,6 +7,7 @@ use md4::Md4;
 fn short_msg_kat_hmac() {
     let file = Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("tests")
+        .join("md4")
         .join("ShortMsgKAT_HMAC.txt");
     let kat = ShortMsgKatHmac::from(file);
     let mut hasher = Md4::new();

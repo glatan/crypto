@@ -1,4 +1,10 @@
-use crypto::cryptographic_hash_function::*;
+use crypto::cryptographic_hash_function::{
+    Blake2b, Blake2s, Blake28, Blake32, Blake48, Blake64, Blake224, Blake256, Blake384, Blake512,
+    CryptographicHashFunction, EdonR224, EdonR256, EdonR384, EdonR512, Keccak224, Keccak256,
+    Keccak384, Keccak512, KeccakF200, KeccakF400, KeccakF800, Md2, Md4, Md5, Ripemd, Ripemd128,
+    Ripemd160, Ripemd256, Ripemd320, Sha0, Sha1, Sha3_224, Sha3_256, Sha3_384, Sha3_512, Sha224,
+    Sha256, Sha384, Sha512, Sha512Trunc224, Sha512Trunc256, Shake128, Shake256,
+};
 use std::io;
 use std::io::BufRead;
 
@@ -54,27 +60,27 @@ fn main() {
         EdonR512::default().hash_to_lowerhex(&input)
     );
     println!(
-        "Keccak-f[200](r=40, c=160):\t{:}",
+        "Keccak-f[200](r=40, c=160, n=512):\t{:}",
         KeccakF200::new(40, 160, 64).hash_to_lowerhex(&input)
     );
     println!(
-        "Keccak-f[400](r=144, c=256):\t{:}",
+        "Keccak-f[400](r=144, c=256, n=512):\t{:}",
         KeccakF400::new(144, 256, 64).hash_to_lowerhex(&input)
     );
     println!(
-        "Keccak-f[400](r=240, c=160):\t{:}",
+        "Keccak-f[400](r=240, c=160, n=512):\t{:}",
         KeccakF400::new(240, 160, 64).hash_to_lowerhex(&input)
     );
     println!(
-        "Keccak-f[800](r=288, c=512):\t{:}",
+        "Keccak-f[800](r=288, c=512, n=512):\t{:}",
         KeccakF800::new(288, 512, 64).hash_to_lowerhex(&input)
     );
     println!(
-        "Keccak-f[800](r=544, c=256):\t{:}",
+        "Keccak-f[800](r=544, c=256, n=512):\t{:}",
         KeccakF800::new(544, 256, 64).hash_to_lowerhex(&input)
     );
     println!(
-        "Keccak-f[800](r=640, c=160):\t{:}",
+        "Keccak-f[800](r=640, c=160, n=512):\t{:}",
         KeccakF800::new(640, 160, 64).hash_to_lowerhex(&input)
     );
     println!(
@@ -96,6 +102,7 @@ fn main() {
     println!("MD2:\t\t{:}", Md2::default().hash_to_lowerhex(&input));
     println!("MD4:\t\t{:}", Md4::default().hash_to_lowerhex(&input));
     println!("MD5:\t\t{:}", Md5::default().hash_to_lowerhex(&input));
+    println!("RIPEMD:\t\t{:}", Ripemd::default().hash_to_lowerhex(&input));
     println!(
         "RIPEMD-128:\t{:}",
         Ripemd128::default().hash_to_lowerhex(&input)
@@ -141,5 +148,13 @@ fn main() {
     println!(
         "SHA3-512:\t{:}",
         Sha3_512::default().hash_to_lowerhex(&input)
+    );
+    println!(
+        "SHAKE-128(d=16):\t{:}",
+        Shake128::new(16).hash_to_lowerhex(&input)
+    );
+    println!(
+        "SHAKE-256(d=32):\t{:}",
+        Shake256::new(32).hash_to_lowerhex(&input)
     );
 }

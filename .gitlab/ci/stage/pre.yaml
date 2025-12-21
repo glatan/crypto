@@ -1,9 +1,26 @@
-prepare_test:
+check_library:
   stage: .pre
   image: $STABLE_LINUX_BASE_IMAGE
   before_script:
     - rustup component add clippy rustfmt
   script:
-    - cargo fmt --check
+    - cargo fmt --check --all
     - cargo build --workspace -F all
     - cargo clippy --workspace -F all
+
+check_examples:
+  stage: .pre
+  image: $STABLE_LINUX_BASE_IMAGE
+  before_script:
+    - rustup component add clippy rustfmt
+  script:
+    - cd examples
+    - |
+      for example in ./*
+      do
+        cd "$example" || exit 1
+        cargo fmt --check --all
+        cargo build --workspace
+        cargo clippy --workspace
+        cd ../ || exit 1
+      done

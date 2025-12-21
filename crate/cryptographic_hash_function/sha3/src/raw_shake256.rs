@@ -20,6 +20,8 @@ impl Default for RawShake256 {
 
 impl CryptographicHashFunction for RawShake256 {
     fn hash_to_bytes(&mut self, message: &[u8]) -> Vec<u8> {
+        // RawSHAKEのMbitsは11、つまり 11100000 → LSBファーストにする → 0b0000_0111 → 0x07
+        // https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf
         self.0.keccak(message, 0x07)
     }
 }

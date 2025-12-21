@@ -20,6 +20,8 @@ impl Default for Sha3_512 {
 
 impl CryptographicHashFunction for Sha3_512 {
     fn hash_to_bytes(&mut self, message: &[u8]) -> Vec<u8> {
+        // SHA-3のMbitsは01、つまり 01100000 → LSBファーストにする → 0b0000_0110 → 0x06
+        // https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf
         self.0.keccak(message, 0x06)
     }
 }

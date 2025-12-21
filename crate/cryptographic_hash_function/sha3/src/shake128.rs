@@ -20,6 +20,8 @@ impl Default for Shake128 {
 
 impl CryptographicHashFunction for Shake128 {
     fn hash_to_bytes(&mut self, message: &[u8]) -> Vec<u8> {
+        // SHAKEのMbitsは1111、つまり 11111000 → LSBファーストにする → 0b00001_1111 → 0x1F
+        // https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf
         self.0.keccak(message, 0x1F)
     }
 }

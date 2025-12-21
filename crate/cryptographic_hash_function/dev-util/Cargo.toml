@@ -11,5 +11,6 @@ repository.workspace = true
 workspace = true
 
 [dependencies]
-cryptographic_hash_function = { path = "../cryptographic_hash_function" }
 byte = { path = "../../byte"}
+cryptographic_hash_function = { path = "../cryptographic_hash_function" }
+hmac = { path = "../../mac/hmac"}

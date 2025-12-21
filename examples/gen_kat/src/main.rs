@@ -7,9 +7,9 @@ use clap::{Parser, Subcommand};
 use crypto::cryptographic_hash_function::{
     Blake2b, Blake2s, Blake28, Blake32, Blake48, Blake64, Blake224, Blake256, Blake384, Blake512,
     EdonR224, EdonR256, EdonR384, EdonR512, Keccak224, Keccak256, Keccak384, Keccak512, KeccakF200,
-    KeccakF400, KeccakF800, Md2, Md4, Md5, Ripemd, Ripemd128, Ripemd160, Ripemd256, Ripemd320,
-    Sha0, Sha1, Sha3_224, Sha3_256, Sha3_384, Sha3_512, Sha224, Sha256, Sha384, Sha512,
-    Sha512Trunc224, Sha512Trunc256, Shake128, Shake256,
+    KeccakF400, KeccakF800, Md2, Md4, Md5, RawShake128, RawShake256, Ripemd, Ripemd128, Ripemd160,
+    Ripemd256, Ripemd320, Sha0, Sha1, Sha3_224, Sha3_256, Sha3_384, Sha3_512, Sha224, Sha256,
+    Sha384, Sha512, Sha512Trunc224, Sha512Trunc256, Shake128, Shake256,
 };
 
 use short_msg_kat::{short_msg_kat, short_msg_kat_hmac};
@@ -109,6 +109,14 @@ enum Algorithm {
         #[arg(long)]
         len: usize,
     },
+    RawShake128 {
+        #[arg(long)]
+        len: usize,
+    },
+    RawShake256 {
+        #[arg(long)]
+        len: usize,
+    },
 }
 
 trait AlgorithmName {
@@ -145,6 +153,8 @@ impl_algorithm_name!(Sha3_384, "SHA-3");
 impl_algorithm_name!(Sha3_512, "SHA-3");
 impl_algorithm_name!(Shake128, "SHAKE");
 impl_algorithm_name!(Shake256, "SHAKE");
+impl_algorithm_name!(RawShake128, "RawSHAKE");
+impl_algorithm_name!(RawShake256, "RawSHAKE");
 impl_algorithm_name!(Blake28, "BLAKE");
 impl_algorithm_name!(Blake32, "BLAKE");
 impl_algorithm_name!(Blake48, "BLAKE");
@@ -521,6 +531,22 @@ fn main() {
         }
         Algorithm::Shake256 { len } => {
             let mut hasher = Shake256::new(len);
+            if args.hmac {
+                short_msg_kat_hmac(&mut hasher);
+            } else {
+                short_msg_kat(&mut hasher);
+            }
+        }
+        Algorithm::RawShake128 { len } => {
+            let mut hasher = RawShake128::new(len);
+            if args.hmac {
+                short_msg_kat_hmac(&mut hasher);
+            } else {
+                short_msg_kat(&mut hasher);
+            }
+        }
+        Algorithm::RawShake256 { len } => {
+            let mut hasher = RawShake256::new(len);
             if args.hmac {
                 short_msg_kat_hmac(&mut hasher);
             } else {

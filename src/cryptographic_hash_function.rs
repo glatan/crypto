@@ -23,6 +23,6 @@ pub use sha1::Sha1;
 #[cfg(feature = "sha2")]
 pub use sha2::{Sha224, Sha256, Sha384, Sha512, Sha512Trunc224, Sha512Trunc256};
 #[cfg(feature = "sha3")]
-pub use sha3::{Sha3_224, Sha3_256, Sha3_384, Sha3_512, Shake128, Shake256};
+pub use sha3::{Sha3_224, Sha3_256, Sha3_384, Sha3_512, Shake128, Shake256, RawShake128, RawShake256};
 
 pub use cryptographic_hash_function::CryptographicHashFunction;

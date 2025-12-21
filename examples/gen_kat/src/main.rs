@@ -6,10 +6,10 @@ use clap::{Parser, Subcommand};
 
 use crypto::cryptographic_hash_function::{
     Blake2b, Blake2s, Blake28, Blake32, Blake48, Blake64, Blake224, Blake256, Blake384, Blake512,
-    EdonR224, EdonR256, EdonR384, EdonR512, Keccak224, Keccak256, Keccak384, Keccak512, Md2, Md4,
-    Md5, Ripemd, Ripemd128, Ripemd160, Ripemd256, Ripemd320, Sha0, Sha1, Sha3_224, Sha3_256,
-    Sha3_384, Sha3_512, Sha224, Sha256, Sha384, Sha512, Sha512Trunc224, Sha512Trunc256, Shake128,
-    Shake256,
+    EdonR224, EdonR256, EdonR384, EdonR512, Keccak224, Keccak256, Keccak384, Keccak512, KeccakF200,
+    KeccakF400, KeccakF800, Md2, Md4, Md5, Ripemd, Ripemd128, Ripemd160, Ripemd256, Ripemd320,
+    Sha0, Sha1, Sha3_224, Sha3_256, Sha3_384, Sha3_512, Sha224, Sha256, Sha384, Sha512,
+    Sha512Trunc224, Sha512Trunc256, Shake128, Shake256,
 };
 
 use short_msg_kat::{short_msg_kat, short_msg_kat_hmac};
@@ -53,6 +53,30 @@ enum Algorithm {
     Edonr256,
     Edonr384,
     Edonr512,
+    KeccakF200 {
+        #[arg(long)]
+        rate: usize,
+        #[arg(long)]
+        capacity: usize,
+        #[arg(long)]
+        len: usize,
+    },
+    KeccakF400 {
+        #[arg(long)]
+        rate: usize,
+        #[arg(long)]
+        capacity: usize,
+        #[arg(long)]
+        len: usize,
+    },
+    KeccakF800 {
+        #[arg(long)]
+        rate: usize,
+        #[arg(long)]
+        capacity: usize,
+        #[arg(long)]
+        len: usize,
+    },
     Keccak224,
     Keccak256,
     Keccak384,
@@ -135,6 +159,9 @@ impl_algorithm_name!(EdonR224, "Edon-R");
 impl_algorithm_name!(EdonR256, "Edon-R");
 impl_algorithm_name!(EdonR384, "Edon-R");
 impl_algorithm_name!(EdonR512, "Edon-R");
+impl_algorithm_name!(KeccakF200, "Keccak");
+impl_algorithm_name!(KeccakF400, "Keccak");
+impl_algorithm_name!(KeccakF800, "Keccak");
 impl_algorithm_name!(Keccak224, "Keccak");
 impl_algorithm_name!(Keccak256, "Keccak");
 impl_algorithm_name!(Keccak384, "Keccak");
@@ -250,6 +277,42 @@ fn main() {
         }
         Algorithm::Edonr512 => {
             let mut hasher = EdonR512::default();
+            if args.hmac {
+                short_msg_kat_hmac(&mut hasher);
+            } else {
+                short_msg_kat(&mut hasher);
+            }
+        }
+        Algorithm::KeccakF200 {
+            rate,
+            capacity,
+            len,
+        } => {
+            let mut hasher = KeccakF200::new(rate, capacity, len);
+            if args.hmac {
+                short_msg_kat_hmac(&mut hasher);
+            } else {
+                short_msg_kat(&mut hasher);
+            }
+        }
+        Algorithm::KeccakF400 {
+            rate,
+            capacity,
+            len,
+        } => {
+            let mut hasher = KeccakF400::new(rate, capacity, len);
+            if args.hmac {
+                short_msg_kat_hmac(&mut hasher);
+            } else {
+                short_msg_kat(&mut hasher);
+            }
+        }
+        Algorithm::KeccakF800 {
+            rate,
+            capacity,
+            len,
+        } => {
+            let mut hasher = KeccakF800::new(rate, capacity, len);
             if args.hmac {
                 short_msg_kat_hmac(&mut hasher);
             } else {

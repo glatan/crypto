@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "default": {
-      "write": ["../../crate/cryptographic_hash_function/"],
-      "run": ["cargo"]
-    }
-  }
-}

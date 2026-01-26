@@ -61,8 +61,8 @@ stages:
 
 variables:
   CARGO_HOME: "${CI_PROJECT_DIR}/cargo"
-  STABLE_RUST_VERSION: "1.92.0"
-  WASMTIME_VERSION: "39.0.1"
+  STABLE_RUST_VERSION: "1.93.0"
+  WASMTIME_VERSION: "41.0.0"
   MSYS2_VERSION: "2025-12-13"
   STABLE_LINUX_BASE_IMAGE: "docker.io/library/rust:${STABLE_RUST_VERSION}-slim-trixie"
   NIGHTLY_LINUX_BASE_IMAGE: "docker.io/rustlang/rust:nightly-trixie-slim"

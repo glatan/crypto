@@ -1,4 +1,4 @@
-FROM docker.io/library/rust:1.92.0-slim-trixie
+FROM docker.io/library/rust:1.93.0-slim-trixie
 
 WORKDIR /workdir
 
@@ -34,14 +34,14 @@ RUN \
 
 ENV CARGO_HOME='/cargo' \
     PATH="${PATH}:/cargo/bin" \
-    WASMTIME_VERSION='39.0.1'
+    WASMTIME_VERSION='41.0.0'
 
 RUN \
     curl -L "https://github.com/bytecodealliance/wasmtime/releases/download/v${WASMTIME_VERSION}/wasmtime-v${WASMTIME_VERSION}-x86_64-linux.tar.xz" > wasmtime-v${WASMTIME_VERSION}-x86_64-linux.tar.xz && \
     tar -xvf wasmtime-v${WASMTIME_VERSION}-x86_64-linux.tar.xz && \
     mv wasmtime-v${WASMTIME_VERSION}-x86_64-linux/wasmtime /usr/local/bin/
 
-ENV STABLE_RUST_VERSION='1.92.0' \
+ENV STABLE_RUST_VERSION='1.93.0' \
     TARGETS='\
         aarch64-unknown-linux-gnu \
         aarch64-unknown-linux-musl \

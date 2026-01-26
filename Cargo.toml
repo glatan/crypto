@@ -6,7 +6,7 @@ edition = "2024"
 
 [workspace.package]
 edition = "2024"
-rust-version = "1.91.1"
+rust-version = "1.93.0"
 license = "GPL-3.0-only"
 homepage = "https://gitlab.com/glatan/crypto/"
 repository = "https://gitlab.com/glatan/crypto/"

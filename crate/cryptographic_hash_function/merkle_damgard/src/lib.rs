@@ -1,5 +1,40 @@
 #![no_std]
 
+mod word;
+mod block;
+
+extern crate alloc;
+
+
+use alloc::vec::Vec;
+
+use cryptographic_hash_function::{CryptographicHashFunction, buffer::Buffer};
+
+
+// trait Word <const N: usize> {
+//     fn endian() -> Endian;
+//     fn to_bytes(&self) -> [u8; N];
+//     fn from_bytes(message: &[u8; N]) -> Self;
+// }
+
+
+trait MerkleDamgard<const BUFFER_SIZE: usize, WORD> {
+    fn endian() -> Endian;
+    fn word_from_bytes() -> WORD;
+    fn padding(buffer: Buffer<BUFFER_SIZE>) {
+
+    }
+}
+
+impl<T: MerkleDamgard> CryptographicHashFunction for T {
+    fn update(&mut self, message: &[u8]) {
+
+    }
+    fn finalize(&mut self) -> Vec<u8> {
+
+    }
+}
+
 // Merkle–Damgård flow for MD4, MD5, RIPEMD-{128, 160, 256, 320}, SHA-0, SHA-1 and SHA-2
 #[macro_export]
 macro_rules! impl_md_flow {

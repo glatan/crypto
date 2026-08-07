@@ -2,11 +2,18 @@
 
 extern crate alloc;
 
+pub mod buffer;
+
 use alloc::{string::String, vec::Vec};
 use core::fmt::Write;
 
 pub trait CryptographicHashFunction {
-    fn hash_to_bytes(&mut self, message: &[u8]) -> Vec<u8>;
+    fn update(&mut self, message: &[u8]);
+    fn finalize(&mut self) -> Vec<u8>;
+    fn hash_to_bytes(&mut self, message: &[u8]) -> Vec<u8> {
+        self.update(message);
+        self.finalize()
+    }
     fn hash_to_lowerhex(&mut self, message: &[u8]) -> String {
         self.hash_to_bytes(message)
             .iter()
@@ -52,7 +59,8 @@ mod tests {
         }
     }
     impl CryptographicHashFunction for Tester {
-        fn hash_to_bytes(&mut self, _: &[u8]) -> Vec<u8> {
+        fn update(&mut self, _: &[u8]) {}
+        fn finalize(&mut self) -> Vec<u8> {
             self.0.clone()
         }
     }

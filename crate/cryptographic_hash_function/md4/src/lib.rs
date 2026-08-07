@@ -5,7 +5,7 @@ extern crate alloc;
 use alloc::vec::Vec;
 use core::cmp::Ordering;
 
-use cryptographic_hash_function::{BlockSize, CryptographicHashFunction, DigestSize};
+use cryptographic_hash_function::{BlockSize, CryptographicHashFunction, DigestSize, buffer::Buffer};
 use merkle_damgard::impl_md_flow;
 
 #[inline(always)]
@@ -44,14 +44,20 @@ const fn round3(a: u32, b: u32, c: u32, d: u32, k: u32, s: u32) -> u32 {
         .rotate_left(s)
 }
 
+const BLOCK_SIZE: usize = 64;
+
 #[derive(Clone, Copy)]
 pub struct Md4 {
+    buffer: Buffer<BLOCK_SIZE>,
     status: [u32; 4],
 }
 
 impl Md4 {
     pub fn new() -> Self {
         Self::default()
+    }
+    const fn padding() -> [u8; 64] {
+        [0x80; 64]
     }
     #[inline(always)]
     #[allow(clippy::many_single_char_names)]
@@ -119,6 +125,7 @@ impl Md4 {
 impl Default for Md4 {
     fn default() -> Self {
         Self {
+            buffer: Buffer::new(),
             status: [0x6745_2301, 0xEFCD_AB89, 0x98BA_DCFE, 0x1032_5476],
         }
     }

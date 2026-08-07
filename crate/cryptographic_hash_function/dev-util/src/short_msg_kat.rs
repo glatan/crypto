@@ -1,8 +1,8 @@
 use std::path::Path;
 use std::{fs, panic};
 
-use byte::hex_to_bytes;
-use cryptographic_hash_function::CryptographicHashFunction;
+use byte::{bytes_to_lowerhex, hex_to_bytes};
+use cryptographic_hash_function::{BlockSize, CryptographicHashFunction};
 use hmac::Hmac;
 
 struct ShortMsgKatEntry {
@@ -11,8 +11,20 @@ struct ShortMsgKatEntry {
 }
 
 impl ShortMsgKatEntry {
-    fn assert(&self, hasher: &mut impl CryptographicHashFunction) {
+    fn assert_by_hash_to_lowerhex(&self, hasher: &mut impl CryptographicHashFunction) {
         assert_eq!(self.md, hasher.hash_to_lowerhex(&hex_to_bytes(&self.msg)));
+    }
+    fn assert_chunked_update<Haser>(&self, hasher: &mut Haser, chunk_size: usize)
+    where
+        Haser: CryptographicHashFunction,
+    {
+        let message = &hex_to_bytes(&self.msg);
+        let blocks = message.chunks(chunk_size);
+        for block in blocks {
+            hasher.update(block);
+        }
+        let digest = hasher.finalize();
+        assert_eq!(self.md, bytes_to_lowerhex(digest.as_slice()));
     }
 }
 
@@ -21,12 +33,40 @@ pub struct ShortMsgKat {
 }
 
 impl ShortMsgKat {
-    pub fn assert<Hasher>(&self, hasher: &mut Hasher)
+    /// hash_to_lowerhexでまとめて処理したあとにassertする
+    pub fn assert_by_hash_to_lowerhex<Hasher>(&self, hasher: &mut Hasher)
     where
         Hasher: CryptographicHashFunction + Clone,
     {
         for entry in &self.entries {
-            entry.assert(&mut hasher.clone());
+            entry.assert_by_hash_to_lowerhex(&mut hasher.clone());
+        }
+    }
+    /// ブロックサイズちょうどのchunkにしてupdateを繰り返した後、finalizeしてassertする
+    pub fn assert_chunked_by_block_size<Hasher>(&self, hasher: &mut Hasher)
+    where
+        Hasher: CryptographicHashFunction + BlockSize + Clone,
+    {
+        for entry in &self.entries {
+            entry.assert_chunked_update(&mut hasher.clone(), hasher.byte_block_len());
+        }
+    }
+    /// ブロックサイズ+1のchunkにしてupdateを繰り返した後、finalizeしてassertする
+    pub fn assert_chunked_by_block_size_plus_1<Hasher>(&self, hasher: &mut Hasher)
+    where
+        Hasher: CryptographicHashFunction + BlockSize + Clone,
+    {
+        for entry in &self.entries {
+            entry.assert_chunked_update(&mut hasher.clone(), hasher.byte_block_len() + 1);
+        }
+    }
+    /// ブロックサイズ-1のchunkにしてupdateを繰り返した後、finalizeしてassertする
+    pub fn assert_chunked_by_block_size_minus_1<Hasher>(&self, hasher: &mut Hasher)
+    where
+        Hasher: CryptographicHashFunction + BlockSize + Clone,
+    {
+        for entry in &self.entries {
+            entry.assert_chunked_update(&mut hasher.clone(), hasher.byte_block_len() - 1);
         }
     }
 }
@@ -82,6 +122,50 @@ impl<T: AsRef<Path>> From<T> for ShortMsgKat {
 
         kat
     }
+}
+
+#[macro_export]
+macro_rules! impl_short_msg_kat_all {
+    ($impl_path:path, $hasher:expr, $short_msg_kat_path:expr) => {
+        mod short_msg_kat {
+            use std::path::Path;
+
+            use dev_util::short_msg_kat::ShortMsgKat;
+            use $impl_path;
+
+            #[test]
+            fn assert_by_hash_to_lowerhex() {
+                let file = Path::new(env!("CARGO_MANIFEST_DIR")).join($short_msg_kat_path);
+                let kat = ShortMsgKat::from(file);
+                let mut hasher = $hasher;
+                kat.assert_by_hash_to_lowerhex(&mut hasher);
+            }
+
+            #[test]
+            fn assert_chunked_by_block_size() {
+                let file = Path::new(env!("CARGO_MANIFEST_DIR")).join($short_msg_kat_path);
+                let kat = ShortMsgKat::from(file);
+                let mut hasher = $hasher;
+                kat.assert_chunked_by_block_size(&mut hasher);
+            }
+
+            #[test]
+            fn assert_chunked_by_block_size_plus_1() {
+                let file = Path::new(env!("CARGO_MANIFEST_DIR")).join($short_msg_kat_path);
+                let kat = ShortMsgKat::from(file);
+                let mut hasher = $hasher;
+                kat.assert_chunked_by_block_size_plus_1(&mut hasher);
+            }
+
+            #[test]
+            fn assert_chunked_by_block_size_minus_1() {
+                let file = Path::new(env!("CARGO_MANIFEST_DIR")).join($short_msg_kat_path);
+                let kat = ShortMsgKat::from(file);
+                let mut hasher = $hasher;
+                kat.assert_chunked_by_block_size_minus_1(&mut hasher);
+            }
+        }
+    };
 }
 
 struct ShortMsgKatHmacEntry {
@@ -147,7 +231,7 @@ impl<T: AsRef<Path>> From<T> for ShortMsgKatHmac {
                             }
                             continue;
                         }
-                        linne if line.starts_with("Key") => {
+                        line if line.starts_with("Key") => {
                             if let Some(idx) = line.find('=') {
                                 key = line[idx + 1..].trim();
                             }

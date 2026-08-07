@@ -6,20 +6,31 @@ mod consts;
 
 use alloc::vec::Vec;
 
-use cryptographic_hash_function::{BlockSize, CryptographicHashFunction, DigestSize};
+use cryptographic_hash_function::{
+    BlockSize, CryptographicHashFunction, DigestSize, buffer::Buffer,
+};
 
 use crate::consts::STABLE;
 
+const BLOCK_SIZE: usize = 16;
+
 #[derive(Clone, Copy)]
 pub struct Md2 {
+    buffer: Buffer<BLOCK_SIZE>,
     state: [u8; 48],
+    checksum: [u8; BLOCK_SIZE],
 }
 
 impl Md2 {
     pub fn new() -> Self {
         Self::default()
     }
+    fn padding(&mut self) {
+        let padding_by = BLOCK_SIZE - self.buffer.len();
+        self.buffer.fill_remaining(padding_by as u8);
+    }
     #[allow(clippy::needless_range_loop)]
+    // ChunksExactの長さがコンパイル時に特定できないので、blockの長さは指定していない
     fn compress(&mut self, block: &[u8]) {
         self.state[16..32].copy_from_slice(block);
         for i in 0..16 {
@@ -34,52 +45,60 @@ impl Md2 {
             t = (t + i) % 256;
         }
     }
-    fn compress_checksum(&mut self, message: &[u8], padded_block: &[u8; 16]) {
-        let mut checksum = [0u8; 16];
-        let mut c;
-        let mut l = 0;
-        for i in 0..(message.len() / 16) {
-            for j in 0..16 {
-                c = message[16 * i + j];
-                checksum[j] ^= STABLE[(c ^ l) as usize];
-                l = checksum[j];
-            }
-        }
+    // ChunksExactの長さがコンパイル時に特定できないので、blockの長さは指定していない
+    #[allow(clippy::needless_range_loop)]
+    fn update_checksum(&mut self, block: &[u8]) {
+        let mut l = self.checksum[15];
         for i in 0..16 {
-            c = padded_block[i];
-            checksum[i] ^= STABLE[(c ^ l) as usize];
-            l = checksum[i];
+            let c = block[i];
+            self.checksum[i] ^= STABLE[(c ^ l) as usize];
+            l = self.checksum[i];
         }
-        self.compress(&checksum);
     }
 }
 
 impl Default for Md2 {
     fn default() -> Self {
-        Self { state: [0; 48] }
+        Self {
+            buffer: Buffer::new(),
+            state: [0; 48],
+            checksum: [0; 16],
+        }
     }
 }
 
 impl CryptographicHashFunction for Md2 {
-    fn hash_to_bytes(&mut self, message: &[u8]) -> Vec<u8> {
-        let len = message.len();
-        if len == 0 {
-            // First block is filled with 16 (padding bytes)
-            self.compress(&[16; 16]);
-            self.compress_checksum(&[], &[16; 16]);
-        } else if len >= 16 {
-            message
-                .chunks_exact(16)
-                .for_each(|block| self.compress(block));
-        }
-        if len != 0 {
-            let paddlen = len % 16;
-            let mut block = [(16 - paddlen) as u8; 16]; // padding
-            let offset = len - paddlen;
-            block[..paddlen].clone_from_slice(&message[offset..len]);
+    fn update(&mut self, message: &[u8]) {
+        let mut used_message_len = self.buffer.write(message);
+        if self.buffer.is_full() {
+            let block = *self.buffer.get_all();
             self.compress(&block);
-            self.compress_checksum(message, &block);
+            self.update_checksum(&block);
+            self.buffer.clear();
+        } else {
+            return;
         }
+
+        let message_len = message.len();
+        while message_len - used_message_len >= BLOCK_SIZE {
+            let block = &message[used_message_len..used_message_len + BLOCK_SIZE];
+            self.compress(block);
+            self.update_checksum(block);
+            used_message_len += BLOCK_SIZE;
+        }
+
+        self.buffer.write(&message[used_message_len..]);
+    }
+
+    fn finalize(&mut self) -> Vec<u8> {
+        self.padding();
+        let final_block = *self.buffer.get_all();
+        self.compress(&final_block);
+        self.update_checksum(&final_block);
+
+        let checksum_block = self.checksum;
+        self.compress(&checksum_block);
+
         self.state[0..16].to_vec()
     }
 }

@@ -9,3 +9,6 @@ repository.workspace = true
 
 [lints]
 workspace = true
+
+[dependencies]
+cryptographic_hash_function = { path = "../cryptographic_hash_function" }
